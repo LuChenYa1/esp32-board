@@ -13,12 +13,12 @@
 #include "esp_bt_defs.h"
 #include "esp_bt_main.h"
 #include "esp_gatt_common_api.h"
-
+#include "nvs_flash.h"
 
 #define TAG "BLE_CFG"
 
 //设备名称
-#define BLE_DEVICE_NAME     "chen"
+#define BLE_DEVICE_NAME     "ESP32-HOME"
 
 
 #define ESP_APP_ID                  0x55
@@ -42,9 +42,9 @@ enum
 };
 
 
-static const uint16_t GATTS_SERVICE_UUID_TEST     = 0x1828;   //自定义服务
-static const uint16_t GATTS_CHAR_UUID_CH1          = 0x2AFF;     //特征1 UUID
-static const uint16_t GATTS_CHAR_UUID_CH2       = 0x2AFE;      //特征2 UUID
+static const uint16_t GATTS_SERVICE_UUID_TEST     = 0x18FF;   //自定义服务
+static const uint16_t GATTS_CHAR_UUID_CH1          = 0x2AFE;     //特征1 UUID
+static const uint16_t GATTS_CHAR_UUID_CH2       = 0x2AFF;      //特征2 UUID
 
 //服务声明UUID 0x2800
 static const uint16_t primary_service_uuid         = ESP_GATT_UUID_PRI_SERVICE;
@@ -110,7 +110,7 @@ static const esp_gatts_attr_db_t gatt_db[SV_IDX_NB] =
       sizeof(uint8_t), sizeof(uint8_t), (uint8_t *)&char_prop_read_write_notify}},
     //特征值
     [SV1_CH1_IDX_CHAR_VAL] =
-    {{ESP_GATT_RSP_BY_APP}, {ESP_UUID_LEN_16, (uint8_t *)&GATTS_CHAR_UUID_CH1, ESP_GATT_PERM_READ | ESP_GATT_PERM_WRITE,
+    {{ESP_GATT_RSP_BY_APP}, {ESP_UUID_LEN_16, (uint8_t *)&GATTS_CHAR_UUID_CH1, ESP_GATT_PERM_READ | ESP_GATT_PERM_WRITE,    //特征值1允许读写
       sizeof(char1_value), sizeof(char1_value), (uint8_t *)char1_value}},
     //特征描述->客户端特征配置
     [SV1_CH1_IDX_CHAR_CFG]  =
@@ -125,12 +125,12 @@ static const esp_gatts_attr_db_t gatt_db[SV_IDX_NB] =
 
     //特征值
     [SV1_CH2_IDX_CHAR_VAL]  =
-    {{ESP_GATT_RSP_BY_APP}, {ESP_UUID_LEN_16, (uint8_t *)&GATTS_CHAR_UUID_CH2, ESP_GATT_PERM_READ | ESP_GATT_PERM_WRITE,
+    {{ESP_GATT_RSP_BY_APP}, {ESP_UUID_LEN_16, (uint8_t *)&GATTS_CHAR_UUID_CH2, ESP_GATT_PERM_READ,  //特征值2只允许读
       sizeof(char2_value), sizeof(char2_value), (uint8_t *)char2_value}},
 
     //特征描述->客户端特征配置
     [SV1_CH2_IDX_CHAR_CFG]      =
-    {{ESP_GATT_AUTO_RSP}, {ESP_UUID_LEN_16, (uint8_t *)&character_client_config_uuid, ESP_GATT_PERM_READ,
+    {{ESP_GATT_AUTO_RSP}, {ESP_UUID_LEN_16, (uint8_t *)&character_client_config_uuid, ESP_GATT_PERM_READ|ESP_GATT_PERM_WRITE,
       sizeof(uint16_t), sizeof(sv1_ch2_client_cfg), (uint8_t *)&sv1_ch2_client_cfg}},
 
 };
@@ -160,7 +160,7 @@ static esp_ble_adv_data_t adv_data = {
     .p_service_uuid = adv_service_uuid128,              //服务UUID
     .flag = (ESP_BLE_ADV_FLAG_GEN_DISC | ESP_BLE_ADV_FLAG_BREDR_NOT_SPT),//普通发现模式|不支持EDR经典蓝牙
 };
-// scan response data
+//扫描回复数据，用于主机在主动扫描时，向设备发起扫描请求，设备需要回复的内容
 static esp_ble_adv_data_t scan_rsp_data = {
     .set_scan_rsp = true,
     .include_name = true,
@@ -214,7 +214,7 @@ static void gatts_profile_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_
             if(param->reg.status == ESP_GATT_OK)
             {
                 gl_gatts_if = gatts_if;
-                gl_conn_id = param->connect.conn_id;
+                //gl_conn_id = param->connect.conn_id;
             }
         }
        	    break;
@@ -242,6 +242,21 @@ static void gatts_profile_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_
                 // the data length of gattc write  must be less than GATTS_DEMO_CHAR_VAL_LEN_MAX.
                 ESP_LOGI(TAG, "GATT_WRITE_EVT, handle = %d, value len = %d, value :", param->write.handle, param->write.len);
                 esp_log_buffer_hex(TAG, param->write.value, param->write.len);
+                if(param->write.handle == netcfg_handle_table[SV1_CH1_IDX_CHAR_CFG])    //特征1客户端特征配置
+                {
+                    sv1_ch1_client_cfg[0] = param->write.value[0];
+                    sv1_ch1_client_cfg[1] = param->write.value[1];
+                }
+                else if(param->write.handle == netcfg_handle_table[SV1_CH2_IDX_CHAR_CFG])   //特征2客户端特征配置
+                {
+                    sv1_ch2_client_cfg[0] = param->write.value[0];
+                    sv1_ch2_client_cfg[1] = param->write.value[1];
+                }
+                else if(param->write.handle == netcfg_handle_table[SV1_CH1_IDX_CHAR_VAL])   //特征1的值
+                {
+                    char1_value[0] = param->write.value[0];
+                    char1_value[1] = param->write.value[1];
+                }
 
                 if (param->write.need_rsp){
                     esp_ble_gatts_send_response(gatts_if, param->write.conn_id, param->write.trans_id, ESP_GATT_OK, NULL);
@@ -274,10 +289,12 @@ static void gatts_profile_event_handler(esp_gatts_cb_event_t event, esp_gatt_if_
             conn_params.timeout = 400;    // 监控超时 = 400*10ms = 4000ms
             //start sent the update connection parameters to the peer device.
             esp_ble_gap_update_conn_params(&conn_params);
+            gl_conn_id = param->connect.conn_id;
             break;
         case ESP_GATTS_DISCONNECT_EVT:  //收到断开连接事件
             ESP_LOGI(TAG, "ESP_GATTS_DISCONNECT_EVT, reason = 0x%x", param->disconnect.reason);
             esp_ble_gap_start_advertising(&adv_params);
+            gl_conn_id = 0xFFFF;
             break;
         case ESP_GATTS_CREAT_ATTR_TAB_EVT:{ //注册ATTR表成功事件
             if (param->add_attr_tab.status != ESP_GATT_OK){
@@ -389,8 +406,14 @@ esp_err_t ble_cfg_net_init(void)
  */
 void ble_set_ch1_value(uint16_t value)
 {
-    esp_ble_gatts_set_attr_value(netcfg_handle_table[SV1_CH1_IDX_CHAR_VAL], 2, (const uint8_t*)&value);
-    esp_ble_gatts_send_indicate(gl_gatts_if, gl_conn_id,netcfg_handle_table[SV1_CH1_IDX_CHAR_VAL], 2, (uint8_t*)&value, false);
+    char1_value[0] = value&0xff;
+    char1_value[1] = value>>8;
+    //判断连接是否有效，以及客户端特征配置是否不为0
+    if(gl_conn_id != 0xFFFF && (sv1_ch1_client_cfg[0] | sv1_ch1_client_cfg[1]))
+    {
+        esp_ble_gatts_set_attr_value(netcfg_handle_table[SV1_CH1_IDX_CHAR_VAL], 2, (const uint8_t*)&char1_value);
+        esp_ble_gatts_send_indicate(gl_gatts_if, gl_conn_id,netcfg_handle_table[SV1_CH1_IDX_CHAR_VAL], 2, (uint8_t*)&char1_value, false);
+    }
 }
 
 /**
@@ -400,6 +423,12 @@ void ble_set_ch1_value(uint16_t value)
  */
 void ble_set_ch2_value(uint16_t value)
 {
-    esp_ble_gatts_set_attr_value(netcfg_handle_table[SV1_CH2_IDX_CHAR_VAL], 2, (const uint8_t*)&value);
-    esp_ble_gatts_send_indicate(gl_gatts_if, gl_conn_id,netcfg_handle_table[SV1_CH2_IDX_CHAR_VAL], 2, (uint8_t*)&value, false);
+    char2_value[0] = value&0xff;
+    char2_value[1] = value>>8;
+    //判断连接是否有效，以及客户端特征配置是否不为0
+    if(gl_conn_id != 0xFFFF && (sv1_ch2_client_cfg[0] | sv1_ch2_client_cfg[1]))
+    {
+        esp_ble_gatts_set_attr_value(netcfg_handle_table[SV1_CH2_IDX_CHAR_VAL], 2, (const uint8_t*)&char2_value);
+        esp_ble_gatts_send_indicate(gl_gatts_if, gl_conn_id,netcfg_handle_table[SV1_CH2_IDX_CHAR_VAL], 2, (uint8_t*)&char2_value, false);
+    }
 }
