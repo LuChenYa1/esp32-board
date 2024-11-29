@@ -24,9 +24,11 @@
 #### 仓库架构
 	本仓库包含多个例程，均可单独编译，每个工程说明如下：
 	
-	aliot		————展示如何连接阿里云IOT平台
+	aliot		————展示如何连接阿里云IOT平台（已弃用）
 	ap_prov		————ap配网例程
 	button		————按键操作例程
+	ble_basic	————BLE的基础模板例程
+	ble_env		————通过BLE读取温湿度数据显示在小程序上
 	dht11		————DHT11温湿度传感器数据读取
 	display		————LVGL移植和st7789LCD驱动芯片代码
 	helloworld	————基础程序，打印helloworld
