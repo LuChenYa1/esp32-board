@@ -107,10 +107,10 @@ static const esp_gatts_attr_db_t gatt_db[SV_IDX_NB] =
     //特征声明
     [SV1_CH1_IDX_CHAR]     =
     {{ESP_GATT_AUTO_RSP}, {ESP_UUID_LEN_16, (uint8_t *)&character_declaration_uuid, ESP_GATT_PERM_READ|ESP_GATT_PERM_WRITE,
-      sizeof(uint8_t), sizeof(uint8_t), (uint8_t *)&char_prop_read_write_notify}},
+      sizeof(uint8_t), sizeof(uint8_t), (uint8_t *)&char_prop_read_write_notify}},   //特征值1允许读写和通知
     //特征值
     [SV1_CH1_IDX_CHAR_VAL] =
-    {{ESP_GATT_RSP_BY_APP}, {ESP_UUID_LEN_16, (uint8_t *)&GATTS_CHAR_UUID_CH1, ESP_GATT_PERM_READ | ESP_GATT_PERM_WRITE,    //特征值1允许读写
+    {{ESP_GATT_RSP_BY_APP}, {ESP_UUID_LEN_16, (uint8_t *)&GATTS_CHAR_UUID_CH1, ESP_GATT_PERM_READ | ESP_GATT_PERM_WRITE, 
       sizeof(char1_value), sizeof(char1_value), (uint8_t *)char1_value}},
     //特征描述->客户端特征配置
     [SV1_CH1_IDX_CHAR_CFG]  =
@@ -121,11 +121,11 @@ static const esp_gatts_attr_db_t gatt_db[SV_IDX_NB] =
     //特征声明
     [SV1_CH2_IDX_CHAR]      =
     {{ESP_GATT_AUTO_RSP}, {ESP_UUID_LEN_16, (uint8_t *)&character_declaration_uuid, ESP_GATT_PERM_READ,
-      sizeof(uint8_t), sizeof(uint8_t), (uint8_t *)&char_prop_read_notify}},
+      sizeof(uint8_t), sizeof(uint8_t), (uint8_t *)&char_prop_read_notify}},  //特征值2只允许读和通知
 
     //特征值
     [SV1_CH2_IDX_CHAR_VAL]  =
-    {{ESP_GATT_RSP_BY_APP}, {ESP_UUID_LEN_16, (uint8_t *)&GATTS_CHAR_UUID_CH2, ESP_GATT_PERM_READ,  //特征值2只允许读
+    {{ESP_GATT_RSP_BY_APP}, {ESP_UUID_LEN_16, (uint8_t *)&GATTS_CHAR_UUID_CH2, ESP_GATT_PERM_READ,
       sizeof(char2_value), sizeof(char2_value), (uint8_t *)char2_value}},
 
     //特征描述->客户端特征配置
