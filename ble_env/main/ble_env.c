@@ -6,6 +6,7 @@
 #include "nvs_flash.h"
 #include "dht11.h"
 #include "driver/gpio.h"
+#include "esp_log.h"
 
 #define DHT11_GPIO      25              // DHT11引脚定义
 
@@ -21,6 +22,7 @@ void mytask1(void* param)
     {
         if(DHT11_StartGet(&tempx10,&humidity))
         {
+            ESP_LOGI(TAG,"temperature:%.1f,humidity:%i%%",(float)tempx10/10.0,humidity);
             ble_set_temp_value(tempx10&0xffff);
             ble_set_humidity_value(humidity&0xffff);
         }
