@@ -11,24 +11,24 @@
 #include "esp32/rom/ets_sys.h"
 #include "driver/ledc.h"
 
-//定义LED的GPIO口
+/* 定义LED的GPIO口 */
 #define LED_GPIO  GPIO_NUM_27
 
 #define TAG     "LEDC"
 
-//LED闪烁运行任务
+/* LED闪烁运行任务 */
 void led_run_task(void* param)
 {
-    int gpio_level = 0;
+    int iGPIOLevel = 0;
     while(1)
     {
         vTaskDelay(pdMS_TO_TICKS(500));
-        gpio_set_level(LED_GPIO,gpio_level);
-        gpio_level = gpio_level?0:1;
+        gpio_set_level(LED_GPIO,iGPIOLevel);
+        iGPIOLevel = iGPIOLevel?0:1;
     }
 }
 
-//LED闪烁初始化
+/* LED闪烁初始化 */
 void led_flash_init(void)
 {
     gpio_config_t led_gpio_cfg = {
@@ -40,7 +40,7 @@ void led_flash_init(void)
     };
     gpio_config(&led_gpio_cfg);
 
-    xTaskCreatePinnedToCore(led_run_task,"led",2048,NULL,3,NULL,1);
+    xTaskCreatePinnedToCore(led_run_task, "led", 2048, NULL, 3, NULL, 1);
 }
 
 
@@ -49,7 +49,7 @@ void led_flash_init(void)
 #define LEDC_OUTPUT_IO          (LED_GPIO)              //选择GPIO端口
 #define LEDC_CHANNEL            LEDC_CHANNEL_0          //PWM通道
 #define LEDC_DUTY_RES           LEDC_TIMER_13_BIT       //分辨率
-#define LEDC_DUTY               (4095)                  //最大占空比值，这里是2^13-1
+#define LEDC_DUTY               (4095)                  //渐变到目标占空比值，这里设置为2^13-1
 #define LEDC_FREQUENCY          (5000)                  //PWM周期
 
 //用于通知渐变完成
@@ -103,38 +103,39 @@ void ledc_breath_task(void* param)
     }
 }
 
-//LED呼吸灯初始化
+/* LED呼吸灯初始化 */
 void led_breath_init(void)
 {
-    //初始化一个定时器
-    ledc_timer_config_t ledc_timer = {
-        .speed_mode       = LEDC_MODE,      //低速模式
-        .timer_num        = LEDC_TIMER,     //定时器ID
-        .duty_resolution  = LEDC_DUTY_RES,  //占空比分辨率，这里是13位，2^13-1
-        .freq_hz          = LEDC_FREQUENCY,  // PWM频率,这里是5KHZ
-        .clk_cfg          = LEDC_AUTO_CLK    // 时钟
+    /* 1、初始化一个定时器 */
+    ledc_timer_config_t xLedcTimer = {
+        .speed_mode       = LEDC_MODE,      // 低速模式
+        .timer_num        = LEDC_TIMER,     // 定时器ID
+        .duty_resolution  = LEDC_DUTY_RES,  // 占空比分辨率，这里是13位，2^13-1
+        .freq_hz          = LEDC_FREQUENCY, // PWM频率,这里是5KHZ
+        .clk_cfg          = LEDC_AUTO_CLK   // 自动选择时钟源
     };
-    ESP_ERROR_CHECK(ledc_timer_config(&ledc_timer));
+    /* 
+     * 对大多数返回 esp_err_t 的 ESP-IDF 函数（特别是初始化函数）的返回值都使用 ESP_ERROR_CHECK() 进行包装。
+     * 这能确保在开发阶段快速发现并定位配置错误或硬件问题
+     */
+    ESP_ERROR_CHECK(ledc_timer_config(&xLedcTimer));
 
-    //ledc通道初始化
-    ledc_channel_config_t ledc_channel = {
-        .speed_mode     = LEDC_MODE,        //低速模式
-        .channel        = LEDC_CHANNEL,     //PWM 通道0-7
-        .timer_sel      = LEDC_TIMER,       //关联定时器，也就是上面初始化好的那个定时器
-        .intr_type      = LEDC_INTR_DISABLE,//不使能中断
-        .gpio_num       = LEDC_OUTPUT_IO,   //设置输出PWM方波的GPIO管脚
-        .duty           = 0, // 设置默认占空比为0
+    /* 2、初始化 ledc 通道 */
+    ledc_channel_config_t xLedcChannel = {
+        .speed_mode     = LEDC_MODE,        // 低速模式
+        .channel        = LEDC_CHANNEL,     // PWM 通道0-7
+        .timer_sel      = LEDC_TIMER,       // 关联定时器，也就是上面初始化好的那个定时器
+        .gpio_num       = LEDC_OUTPUT_IO,   // 设置输出PWM方波的GPIO管脚
+        .intr_type      = LEDC_INTR_DISABLE,// 不使能中断
+        .duty           = 0,                // 设置默认占空比为0
         .hpoint         = 0
     };
-    ESP_ERROR_CHECK(ledc_channel_config(&ledc_channel));
+    ESP_ERROR_CHECK(ledc_channel_config(&xLedcChannel));
 
-    //开启硬件PWM
+    /* 3、(可选)安装硬件渐变服务 */
     ledc_fade_func_install(0);
 
-    //创建一个事件组，用于通知任务渐变完成
-    s_ledc_ev = xEventGroupCreate();
-
-    //配置LEDC渐变
+    /* 4、(可选)配置 ledc 渐变 */
     ledc_set_fade_with_time(LEDC_MODE,LEDC_CHANNEL,LEDC_DUTY,2000);
 
     //启动渐变
@@ -143,6 +144,9 @@ void led_breath_init(void)
     //设置渐变完成回调函数
     ledc_cbs_t cbs = {.fade_cb=ledc_finish_cb,};
     ledc_cb_register(LEDC_MODE,LEDC_CHANNEL,&cbs,NULL);
+
+    //创建一个事件组，用于通知任务渐变完成
+    s_ledc_ev = xEventGroupCreate();
 
     xTaskCreatePinnedToCore(ledc_breath_task,"ledc",2048,NULL,3,NULL,1);
 }

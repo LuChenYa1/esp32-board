@@ -1,0 +1,15 @@
+[
+    {
+        "idf.pythonInstallPath": "/usr/bin/python3"
+    },
+    {
+        "cmake.environment": {
+            "IDF_PATH": "/home/luchenya/project/01_learning_notes/esp32/esp-idf" // 请替换为你的实际路径
+        }
+    },
+    {
+        "cmake.configureEnvironment": {
+            "IDF_PATH": "/home/luchenya/project/01_learning_notes/esp32/esp-idf"
+        }
+    }
+]
