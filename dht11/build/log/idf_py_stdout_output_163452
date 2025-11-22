@@ -1,0 +1,548 @@
+ets Jul 29 2019 12:21:46
+
+rst:0x1 (POWERON_RESET),boot:0x3f (SPI_FAST_FLASH_BOOT)
+configsip: 153911750, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:7172
+load:0x40078000,len:15532
+load:0x40080400,len:4
+load:0x40080404,len:3904
+entry 0x40080640
+[0;32mI (30) boot: ESP-IDF v5.2 2nd stage bootloader[0m
+[0;32mI (30) boot: compile time Nov 22 2025 13:26:06[0m
+[0;32mI (30) boot: Multicore bootloader[0m
+[0;32mI (34) boot: chip revision: v3.1[0m
+[0;32mI (38) boot.esp32: SPI Speed      : 40MHz[0m
+[0;32mI (43) boot.esp32: SPI Mode       : DIO[0m
+[0;32mI (47) boot.esp32: SPI Flash Size : 4MB[0m
+[0;32mI (52) boot: Enabling RNG early entropy source...[0m
+[0;32mI (57) boot: Partition Table:;32mI (61) boot: ## Label       ength[0m
+[0;32mI (68) boot:  0 nvs              WiFi data    06000[0m
+[0;32mI (75) boot:  1 phy_init         RF data          01 01 0000f000 00001000[0m
+[0;32mI (83) boot:  2 factory          factory app      00 00 00010000 00100000[0m
+[0;32mI (90) boot: End of partition table[0m
+[0;32mI (95) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=0d7f8h ( 55288) map[0m
+[0;32mI (122) esp_image: segment 1: paddr=0001d820 vaddr=3ffb0000 size=02320h (  8992) load[0m
+[0;32mI (126) esp_image: segment 2: paddr=0001fb48 vaddr=40080000 size=004d0h (  1232) load[0m
+[0;32mI (128) esp_image: segment 3: paddr=00020020 vaddr=400d0020 size=18c74h (101492) map[0m
+[0;32mI (171) esp_image: segment 4: paddr=00038c9c vaddr=400804d0 size=0d5c8h ( 54728) load[0m
+[0;32mI (200) boot: Loaded app from partition at offset 0x10000[0m
+[0;32mI (200) boot: Disabling RNG early entropy source...[0m
+[0;32mI (211) cpu_start: Multicore app[0m
+[0;32mI (220) cpu_start: Pro cpu start user code[0m
+[0;32mI (220) cpu_start: cpu freq: 160000000 Hz[0m
+[0;32mI (220) cpu_start: Application information:[0m
+[0;32mI (223) cpu_start: Project name:     dht11[0m
+[0;32mI (228) cpu_start: App version:      c3cd2a9-dirty[0m
+[0;32mI (233) cpu_start: Compile time:     Nov 22 2025 13:24:23[0m
+[0;32mI (239) cpu_start: ELF file SHA256:  e585e95782eeea8c...[0m
+[0;32mI (245) cpu_start: ESP-IDF:          v5.2[0m
+[0;32mI (250) cpu_start: Min chip rev:     v0.0[0m
+[0;32mI (255) cpu_start: Max chip rev:     v3.99 [0m
+[0;32mI (259) cpu_start: Chip rev:         v3.1[0m
+[0;32mI (264) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (272) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM[0m
+[0;32mI (277) heap_init: At 3FFB2E48 len 0002D1B8 (180 KiB): DRAM[0m
+[0;32mI (284) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM[0m
+[0;32mI (290) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM[0m
+[0;32mI (296) heap_init: At 4008DA98 len 00012568 (73 KiB): IRAM[0m
+[0;32mI (304) spi_flash: detected chip: generic[0m
+[0;32mI (307) spi_flash: flash io: dio[0m
+[0;33mW (311) spi_flash: Detected size(8192k) larger than the size in the binary image header(4096k). Using the size in the binary image header.[0m
+[0;32mI (325) main_task: Started on CPU0[0m
+[0;32mI (335) main_task: Calling app_main()[0m
+[0;32mI (445) DHT11_Demo: [APP] APP Is Start!~
+[0m
+[0;32mI (445) DHT11_Demo: [APP] IDF Version is 5.2.0[0m
+[0;32mI (445) DHT11_Demo: [APP] Free memory: 298744 bytes[0m
+[0;32mI (445) DHT11_Demo: [APP] IDF version: v5.2[0m
+[0;32mI (455) gpio: GPIO[25]| InputEn: 1| OutputEn: 0| OpenDrain: 0| Pullup: 1| Pulldown: 0| Intr:0 [0m
+[0;32mI (455) DHT11: register RX done callback[0m
+[0;32mI (485) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (1515) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (2535) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (3555) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (4575) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (5595) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (6615) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (7635) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (8655) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (9675) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (10695) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (11715) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (12735) DHT11_Demo: temp->40.5 C     hum->5%[0m
+[0;32mI (13755) DHT11_Demo: temp->40.6 C     hum->10%[0m
+[0;32mI (14775) DHT11_Demo: temp->40.6 C     hum->23%[0m
+[0;32mI (15795) DHT11_Demo: temp->40.8 C     hum->28%[0m
+[0;32mI (16815) DHT11_Demo: temp->40.3 C     hum->30%[0m
+[0;32mI (17835) DHT11_Demo: temp->40.2 C     hum->31%[0m
+[0;32mI (18855) DHT11_Demo: temp->40.9 C     hum->31%[0m
+[0;32mI (19875) DHT11_Demo: temp->40.7 C     hum->32%[0m
+[0;32mI (20895) DHT11_Demo: temp->40.3 C     hum->32%[0m
+[0;32mI (21915) DHT11_Demo: temp->40.3 C     hum->32%[0m
+[0;32mI (22935) DHT11_Demo: temp->40.4 C     hum->32%[0m
+[0;32mI (23955) DHT11_Demo: temp->40.8 C     hum->33%[0m
+[0;32mI (24975) DHT11_Demo: temp->40.7 C     hum->33%[0m
+[0;32mI (25995) DHT11_Demo: temp->40.8 C     hum->33%[0m
+[0;32mI (27015) DHT11_Demo: temp->40.5 C     hum->33%[0m
+[0;32mI (28035) DHT11_Demo: temp->40.0 C     hum->33%[0m
+[0;32mI (29055) DHT11_Demo: temp->40.6 C     hum->33%[0m
+[0;32mI (30075) DHT11_Demo: temp->40.3 C     hum->33%[0m
+[0;32mI (31095) DHT11_Demo: temp->40.3 C     hum->33%[0m
+[0;32mI (32115) DHT11_Demo: temp->40.5 C     hum->34%[0m
+[0;32mI (33135) DHT11_Demo: temp->40.2 C     hum->34%[0m
+[0;32mI (34155) DHT11_Demo: temp->40.9 C     hum->34%[0m
+[0;32mI (35175) DHT11_Demo: temp->40.7 C     hum->34%[0m
+[0;32mI (36195) DHT11_Demo: temp->40.5 C     hum->34%[0m
+[0;32mI (37215) DHT11_Demo: temp->40.2 C     hum->34%[0m
+[0;32mI (38235) DHT11_Demo: temp->40.0 C     hum->34%[0m
+[0;32mI (39255) DHT11_Demo: temp->40.5 C     hum->34%[0m
+[0;32mI (40275) DHT11_Demo: temp->40.2 C     hum->34%[0m
+[0;32mI (41295) DHT11_Demo: temp->40.0 C     hum->34%[0m
+[0;32mI (42315) DHT11_Demo: temp->40.5 C     hum->34%[0m
+[0;32mI (43335) DHT11_Demo: temp->40.3 C     hum->33%[0m
+[0;32mI (44355) DHT11_Demo: temp->40.6 C     hum->33%[0m
+[0;32mI (45375) DHT11_Demo: temp->40.5 C     hum->32%[0m
+[0;32mI (46395) DHT11_Demo: temp->40.8 C     hum->30%[0m
+[0;32mI (47415) DHT11_Demo: temp->40.3 C     hum->27%[0m
+[0;32mI (48435) DHT11_Demo: temp->40.0 C     hum->22%[0m
+[0;32mI (49455) DHT11_Demo: temp->40.9 C     hum->20%[0m
+[0;32mI (50475) DHT11_Demo: temp->40.3 C     hum->27%[0m
+[0;32mI (51495) DHT11_Demo: temp->40.5 C     hum->33%[0m
+[0;32mI (52515) DHT11_Demo: temp->40.4 C     hum->34%[0m
+[0;32mI (53535) DHT11_Demo: temp->40.1 C     hum->34%[0m
+[0;32mI (54555) DHT11_Demo: temp->40.7 C     hum->33%[0m
+[0;32mI (55575) DHT11_Demo: temp->40.6 C     hum->31%[0m
+[0;32mI (56595) DHT11_Demo: temp->40.9 C     hum->30%[0m
+[0;32mI (57615) DHT11_Demo: temp->40.5 C     hum->27%[0m
+[0;32mI (58635) DHT11_Demo: temp->40.4 C     hum->23%[0m
+[0;32mI (59655) DHT11_Demo: temp->40.5 C     hum->21%[0m
+[0;32mI (60675) DHT11_Demo: temp->40.8 C     hum->18%[0m
+[0;32mI (61695) DHT11_Demo: temp->40.6 C     hum->15%[0m
+[0;32mI (62715) DHT11_Demo: temp->40.1 C     hum->13%[0m
+[0;32mI (63735) DHT11_Demo: temp->40.9 C     hum->11%[0m
+[0;32mI (64755) DHT11_Demo: temp->40.9 C     hum->10%[0m
+[0;32mI (65775) DHT11_Demo: temp->40.7 C     hum->9%[0m
+[0;32mI (66795) DHT11_Demo: temp->40.3 C     hum->8%[0m
+[0;32mI (67815) DHT11_Demo: temp->40.4 C     hum->7%[0m
+[0;32mI (68835) DHT11_Demo: temp->40.0 C     hum->6%[0m
+[0;32mI (69855) DHT11_Demo: temp->40.1 C     hum->6%[0m
+[0;32mI (70875) DHT11_Demo: temp->40.6 C     hum->6%[0m
+[0;32mI (71895) DHT11_Demo: temp->40.9 C     hum->6%[0m
+[0;32mI (72915) DHT11_Demo: temp->40.8 C     hum->6%[0m
+[0;32mI (73935) DHT11_Demo: temp->40.1 C     hum->6%[0m
+[0;32mI (74955) DHT11_Demo: temp->40.7 C     hum->6%[0m
+[0;32mI (75975) DHT11_Demo: temp->40.7 C     hum->6%[0m
+[0;32mI (76995) DHT11_Demo: temp->40.7 C     hum->6%[0m
+[0;32mI (78015) DHT11_Demo: temp->40.5 C     hum->5%[0m
+[0;32mI (79035) DHT11_Demo: temp->40.7 C     hum->5%[0m
+[0;32mI (80055) DHT11_Demo: temp->40.3 C     hum->5%[0m
+[0;32mI (81075) DHT11_Demo: temp->40.3 C     hum->5%[0m
+[0;32mI (82095) DHT11_Demo: temp->40.3 C     hum->5%[0m
+[0;32mI (83115) DHT11_Demo: temp->40.3 C     hum->5%[0m
+[0;32mI (84135) DHT11_Demo: temp->40.3 C     hum->5%[0m
+[0;32mI (85155) DHT11_Demo: temp->40.4 C     hum->5%[0m
+[0;32mI (86175) DHT11_Demo: temp->40.5 C     hum->5%[0m
+[0;32mI (87195) DHT11_Demo: temp->40.8 C     hum->5%[0m
+[0;32mI (88215) DHT11_Demo: temp->40.1 C     hum->5%[0m
+[0;32mI (89235) DHT11_Demo: temp->40.4 C     hum->5%[0m
+[0;32mI (90255) DHT11_Demo: temp->40.6 C     hum->5%[0m
+[0;32mI (91275) DHT11_Demo: temp->40.2 C     hum->5%[0m
+[0;32mI (92295) DHT11_Demo: temp->40.8 C     hum->5%[0m
+[0;32mI (93315) DHT11_Demo: temp->40.3 C     hum->5%[0m
+[0;32mI (94335) DHT11_Demo: temp->40.3 C     hum->5%[0m
+[0;32mI (95355) DHT11_Demo: temp->40.4 C     hum->4%[0m
+[0;32mI (96375) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (97395) DHT11_Demo: temp->40.2 C     hum->4%[0m
+[0;32mI (98415) DHT11_Demo: temp->40.3 C     hum->4%[0m
+[0;32mI (99435) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (100455) DHT11_Demo: temp->40.4 C     hum->4%[0m
+[0;32mI (101475) DHT11_Demo: temp->40.4 C     hum->4%[0m
+[0;32mI (102495) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (103515) DHT11_Demo: temp->40.2 C     hum->4%[0m
+[0;32mI (104535) DHT11_Demo: temp->40.4 C     hum->4%[0m
+[0;32mI (105555) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (106575) DHT11_Demo: temp->40.2 C     hum->4%[0m
+[0;32mI (107595) DHT11_Demo: temp->40.4 C     hum->4%[0m
+[0;32mI (108615) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (109635) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (110655) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (111675) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (112695) DHT11_Demo: temp->40.5 C     hum->4%[0m
+[0;32mI (113715) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (114735) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (115755) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (116775) DHT11_Demo: temp->40.3 C     hum->4%[0m
+[0;32mI (117795) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (118815) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (119835) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (120855) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (121875) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (122895) DHT11_Demo: temp->40.2 C     hum->4%[0m
+[0;32mI (123915) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (124935) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (125955) DHT11_Demo: temp->40.2 C     hum->4%[0m
+[0;32mI (126975) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (127995) DHT11_Demo: temp->40.2 C     hum->4%[0m
+[0;32mI (129015) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (130035) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (131055) DHT11_Demo: temp->40.3 C     hum->4%[0m
+[0;32mI (132075) DHT11_Demo: temp->40.5 C     hum->4%[0m
+[0;32mI (133095) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (134115) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (135135) DHT11_Demo: temp->40.2 C     hum->4%[0m
+[0;32mI (136155) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (137175) DHT11_Demo: temp->40.2 C     hum->4%[0m
+[0;32mI (138195) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (139215) DHT11_Demo: temp->40.5 C     hum->4%[0m
+[0;32mI (140235) DHT11_Demo: temp->40.2 C     hum->4%[0m
+[0;32mI (141255) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (142275) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (143295) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (144315) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (145335) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (146355) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (147375) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (148395) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (149415) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (150435) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (151455) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (152475) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (153495) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (154515) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (155535) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (156555) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (157575) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (158595) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (159615) DHT11_Demo: temp->40.3 C     hum->4%[0m
+[0;32mI (160635) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (161655) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (162675) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (163695) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (164715) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (165735) DHT11_Demo: temp->40.3 C     hum->4%[0m
+[0;32mI (166755) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (167775) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (168795) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (169815) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (170835) DHT11_Demo: temp->40.3 C     hum->4%[0m
+[0;32mI (171855) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (172875) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (173895) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (174915) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (175935) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (176955) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (177975) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (178995) DHT11_Demo: temp->40.2 C     hum->4%[0m
+[0;32mI (180015) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (181035) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (182055) DHT11_Demo: temp->40.3 C     hum->4%[0m
+[0;32mI (183075) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (184095) DHT11_Demo: temp->40.2 C     hum->4%[0m
+[0;32mI (185115) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (186135) DHT11_Demo: temp->40.2 C     hum->4%[0m
+[0;32mI (187155) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (188175) DHT11_Demo: temp->40.2 C     hum->4%[0m
+[0;32mI (189195) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (190215) DHT11_Demo: temp->40.3 C     hum->4%[0m
+[0;32mI (191235) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (192255) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (193275) DHT11_Demo: temp->40.3 C     hum->4%[0m
+[0;32mI (194295) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (195315) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (196335) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (197355) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (198375) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (199395) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (200415) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (201435) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (202455) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (203475) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (204495) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (205515) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (206535) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (207555) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (208575) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (209595) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (210615) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (211635) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (212655) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (213675) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (214695) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (215715) DHT11_Demo: temp->40.5 C     hum->4%[0m
+[0;32mI (216735) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (217755) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (218775) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (219795) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (220815) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (221835) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (222855) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (223875) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (224895) DHT11_Demo: temp->40.5 C     hum->4%[0m
+[0;32mI (225915) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (226935) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (227955) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (228975) DHT11_Demo: temp->40.5 C     hum->4%[0m
+[0;32mI (229995) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (231015) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (232035) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (233055) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (234075) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (235095) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (236115) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (237135) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (238155) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (239175) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (240195) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (241215) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (242235) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (243255) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (244275) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (245295) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (246315) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (247335) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (248355) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (249375) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (250395) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (251415) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (252435) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (253455) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (254475) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (255495) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (256515) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (257535) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (258555) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (259575) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (260595) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (261615) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (262635) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (263655) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (264675) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (265695) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (266715) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (267735) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (268755) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (269775) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (270795) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (271815) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (272835) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (273855) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (274875) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (275895) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (276915) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (277935) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (278955) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (279975) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (280995) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (282015) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (283035) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (284055) DHT11_Demo: temp->40.2 C     hum->4%[0m
+[0;32mI (285075) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (286095) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (287115) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (288135) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (289155) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (290175) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (291195) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (292215) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (293235) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (294255) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (295275) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (296295) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (297315) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (298335) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (299355) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (300375) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (301395) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (302415) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (303435) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (304455) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (305475) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (306495) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (307515) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (308535) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (309555) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (310575) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (311595) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (312615) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (313635) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (314655) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (315675) DHT11_Demo: temp->40.5 C     hum->4%[0m
+[0;32mI (316695) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (317715) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (318735) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (319755) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (320775) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (321795) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (322815) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (323835) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (324855) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (325875) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (326895) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (327915) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (328935) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (329955) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (330975) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (331995) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (333015) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (334035) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (335055) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (336075) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (337095) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (338115) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (339135) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (340155) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (341175) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (342195) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (343215) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (344235) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (345255) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (346275) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (347295) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (348315) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (349335) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (350355) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (351375) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (352395) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (353415) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (354435) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (355455) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (356475) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (357495) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (358515) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (359535) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (360555) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (361575) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (362595) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (363615) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (364635) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (365655) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (366675) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (367695) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (368715) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (369735) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (370755) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (371775) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (372795) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (373815) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (374835) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (375855) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (376875) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (377895) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (378915) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (379935) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (380955) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (381975) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (382995) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (384015) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (385035) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (386055) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (387075) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (388095) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (389115) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (390135) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (391155) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (392175) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (393195) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (394215) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (395235) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (396255) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (397275) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (398295) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (399315) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (400335) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (401355) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (402375) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (403395) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (404415) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (405435) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (406455) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (407475) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (408495) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (409515) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (410535) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (411555) DHT11_Demo: temp->40.4 C     hum->4%[0m
+[0;32mI (412575) DHT11_Demo: temp->40.4 C     hum->4%[0m
+[0;32mI (413595) DHT11_Demo: temp->40.3 C     hum->4%[0m
+[0;32mI (414615) DHT11_Demo: temp->40.2 C     hum->4%[0m
+[0;32mI (415635) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (416655) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (417675) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (418695) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (419715) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (420735) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (421755) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (422775) DHT11_Demo: temp->40.5 C     hum->4%[0m
+[0;32mI (423795) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (424815) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (425835) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (426855) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (427875) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (428895) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (429915) DHT11_Demo: temp->40.5 C     hum->4%[0m
+[0;32mI (430935) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (431955) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (432975) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (433995) DHT11_Demo: temp->40.5 C     hum->4%[0m
+[0;32mI (435015) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (436035) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (437055) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (438075) DHT11_Demo: temp->40.5 C     hum->4%[0m
+[0;32mI (439095) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (440115) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (441135) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (442155) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (443175) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (444195) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (445215) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (446235) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (447255) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (448275) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (449295) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (450315) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (451335) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (452355) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (453375) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (454395) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (455415) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (456435) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (457455) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (458475) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (459495) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (460515) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (461535) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (462555) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (463575) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (464595) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (465615) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (466635) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (467655) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (468675) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (469695) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (470715) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (471735) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (472755) DHT11_Demo: temp->40.5 C     hum->4%[0m
+[0;32mI (473775) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (474795) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (475815) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (476835) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (477855) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (478875) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (479895) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (480915) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (481935) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (482955) DHT11_Demo: temp->40.5 C     hum->4%[0m
+[0;32mI (483975) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (484995) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (486015) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (487035) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (488055) DHT11_Demo: temp->40.1 C     hum->4%[0m
+[0;32mI (489075) DHT11_Demo: temp->40.6 C     hum->4%[0m
+[0;32mI (490095) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (491115) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (492135) DHT11_Demo: temp->40.8 C     hum->4%[0m
+[0;32mI (493155) DHT11_Demo: temp->40.0 C     hum->4%[0m
+[0;32mI (494175) DHT11_Demo: temp->40.9 C     hum->4%[0m
+[0;32mI (495195) DHT11_Demo: temp->40.7 C     hum->4%[0m
+[0;32mI (496215) DHT11_Demo: temp->40.6 C     h
