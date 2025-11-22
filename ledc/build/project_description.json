@@ -1,7 +1,7 @@
 {
     "version":            "1.1",
     "project_name":       "ledc",
-    "project_version":    "873efe1-dirty",
+    "project_version":    "f5d96e6-dirty",
     "project_path":       "/home/luchenya/project/01_learning_notes/esp32/esp32-board/ledc",
     "idf_path":           "/home/luchenya/project/01_learning_notes/esp32/esp-idf",
     "build_dir":          "/home/luchenya/project/01_learning_notes/esp32/esp32-board/ledc/build",
