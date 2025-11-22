@@ -1,0 +1,172 @@
+ets Jul 29 2019 12:21:46
+
+rst:0x1 (POWERON_RESET),boot:0x3f (SPI_FAST_FLASH_BOOT)
+configsip: 153911750, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:7172
+load:0x40078000,len:15532
+load:0x40080400,len:4
+load:0x40080404,len:3904
+entry 0x40080640
+[0;32mI (30) boot: ESP-IDF v5.2 2nd stage bootloader[0m
+[0;32mI (30) boot: compile time Nov 22 2025 21:20:29[0m
+[0;32mI (30) boot: Multicore bootloader[0m
+[0;32mI (34) boot: chip revision: v3.1[0m
+[0;32mI (38) boot.esp32: SPI Speed      : 40MHz[0m
+[0;32mI (43) boot.esp32: SPI Mode       : DIO[0m
+[0;32mI (47) boot.esp32: SPI Flash Size : 2MB[0m
+[0;32mI (52) boot: Enabling RNG early entropy source...[0m
+[0;32mI (57) boot: Partition Table:[0m
+[0;32mI (61) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (68) boot:  0 nvs              WiFi data        01 02 00009000 00006000[0m
+[0;32mI (75) boot:  1 phy_init         RF data          01 01 0000f000 00001000[0m
+[0;32mI (83) boot:  2 factory          factory app      00 00 00010000 00100000[0m
+[0;32mI (90) boot: End of partition table[0m
+[0;32mI (94) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=0a314h ( 41748) map[0m
+[0;32mI (117) esp_image: segment 1: paddr=0001a33c vaddr=3ff80000 size=00004h (     4) load[0m
+[0;32mI (118) esp_image: segment 2: paddr=0001a348 vaddr=3ffb0000 size=0220ch (  8716) load[0m
+[0;32mI (126) esp_image: segment 3: paddr=0001c55c vaddr=40080000 size=03abch ( 15036) load[0m
+[0;32mI (138) esp_image: segment 4: paddr=00020020 vaddr=400d0020 size=150a0h ( 86176) map[0m
+[0;32mI (170) esp_image: segment 5: paddr=000350c8 vaddr=40083abc size=08c60h ( 35936) load[0m
+[0;32mI (190) boot: Loaded app from partition at offset 0x10000[0m
+[0;32mI (190) boot: Disabling RNG early entropy source...[0m
+[0;32mI (202) cpu_start: Multicore app[0m
+[0;32mI (211) cpu_start: Pro cpu start user code[0m
+[0;32mI (211) cpu_start: cpu freq: 160000000 Hz[0m
+[0;32mI (211) cpu_start: Application information:[0m
+[0;32mI (214) cpu_start: Project name:     ntc[0m
+[0;32mI (218) cpu_start: App version:      45f82d6-dirty[0m
+[0;32mI (224) cpu_start: Compile time:     Nov 22 2025 21:18:13[0m
+[0;32mI (230) cpu_start: ELF file SHA256:  de7d529578b9649d...[0m
+[0;32mI (236) cpu_start: ESP-IDF:          v5.2[0m
+[0;32mI (240) cpu_start: Min chip rev:     v0.0[0m
+[0;32mI (245) cpu_start: Max chip rev:     v3.99 [0m
+[0;32mI (250) cpu_start: Chip rev:         v3.1[0m
+[0;32mI (255) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (262) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM[0m
+[0;32mI (268) heap_init: At 3FFB2B60 len 0002D4A0 (181 KiB): DRAM[0m
+[0;32mI (274) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM[0m
+[0;32mI (281) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM[0m
+[0;32mI (287)n 000138E4 (78 KiB): IRAM[0m
+[0;32mI (295) spi_flash: detected chip: generic[0m
+[0;32mI (298) spi_flash: flash io: dio[0m
+[0;33mW (302) spi_flash: Detected size(8192k) larger than the size in the binary image header(2048k). Using the size in the binary image header.[0m
+[0;32mI (316) main_task: Started on CPU0[0m
+[0;32mI (326) main_task: Calling app_main()[0m
+[0;32mI (326) adc: calibration scheme version is Line Fitting[0m
+[0;32mI (326) adc: Calibration Success[0m
+[0;32mI (326) main: current temp:0.00[0m
+[0;32mI (1336) main: current temp:18.58[0m
+[0;32mI (2336) main: current temp:18.56[0m
+[0;32mI (3336) main: current temp:18.56[0m
+[0;32mI (4336) main: current temp:18.50[0m
+[0;32mI (5336) main: current temp:18.41[0m
+[0;32mI (6336) main: current temp:18.47[0m
+[0;32mI (7336) main: current temp:18.64[0m
+[0;32mI (8336) main: current temp:18.47[0m
+[0;32mI (9336) main: current temp:18.44[0m
+[0;32mI (10336) main: current temp:18.53[0m
+[0;32mI (11336) main: current temp:18.47[0m
+[0;32mI (12336) main: current temp:18.56[0m
+[0;32mI (13336) main: current temp:18.53[0m
+[0;32mI (14336) main: current temp:18.47[0m
+[0;32mI (15336) main: current temp:18.58[0m
+[0;32mI (16336) main: current temp:18.61[0m
+[0;32mI (17336) main: current temp:19.31[0m
+[0;32mI (18336) main: current temp:20.01[0m
+[0;32mI (19336) main: current temp:20.56[0m
+[0;32mI (20336) main: current temp:21.53[0m
+[0;32mI (21336) main: current temp:22.60[0m
+[0;32mI (22336) main: current temp:23.40[0m
+[0;32mI (23336) main: current temp:24.13[0m
+[0;32mI (24336) main: current temp:24.77[0m
+[0;32mI (25336) main: current temp:25.37[0m
+[0;32mI (26336) main: current temp:25.86[0m
+[0;32mI (27336) main: current temp:26.34[0m
+[0;32mI (28336) main: current temp:26.55[0m
+[0;32mI (29336) main: current temp:26.96[0m
+[0;32mI (30336) main: current temp:27.24[0m
+[0;32mI (31336) main: current temp:27.68[0m
+[0;32mI (32336) main: current temp:27.95[0m
+[0;32mI (33336) main: current temp:28.47[0m
+[0;32mI (34336) main: current temp:28.74[0m
+[0;32mI (35336) main: current temp:28.99[0m
+[0;32mI (36336) main: current temp:29.04[0m
+[0;32mI (37336) main: current temp:29.29[0m
+[0;32mI (38336) main: current temp:29.47[0m
+[0;32mI (39336) main: current temp:29.56[0m
+[0;32mI (40336) main: current temp:29.41[0m
+[0;32mI (41336) main: current temp:29.56[0m
+[0;32mI (42336) main: current temp:29.56[0m
+[0;32mI (43336) main: current temp:29.80[0m
+[0;32mI (44336) main: current temp:29.77[0m
+[0;32mI (45336) main: current temp:29.77[0m
+[0;32mI (46336) main: current temp:29.68[0m
+[0;32mI (47336) main: current temp:29.68[0m
+[0;32mI (48336) main: current temp:29.56[0m
+[0;32mI (49336) main: current temp:29.38[0m
+[0;32mI (50336) main: current temp:29.32[0m
+[0;32mI (51336) main: current temp:29.00[0m
+[0;32mI (52336) main: current temp:28.85[0m
+[0;32mI (53336) main: current temp:28.82[0m
+[0;32mI (54336) main: current temp:28.79[0m
+[0;32mI (55336) main: current temp:28.53[0m
+[0;32mI (56336) main: current temp:28.62[0m
+[0;32mI (57336) main: current temp:28.38[0m
+[0;32mI (58336) main: current temp:28.38[0m
+[0;32mI (59336) main: current temp:28.17[0m
+[0;32mI (60336) main: current temp:28.08[0m
+[0;32mI (61336) main: current temp:27.95[0m
+[0;32mI (62336) main: current temp:27.95[0m
+[0;32mI (63336) main: current temp:27.95[0m
+[0;32mI (64336) main: current temp:27.80[0m
+[0;32mI (65336) main: current temp:27.74[0m
+[0;32mI (66336) main: current temp:27.62[0m
+[0;32mI (67336) main: current temp:27.51[0m
+[0;32mI (68336) main: current temp:27.48[0m
+[0;32mI (69336) main: current temp:27.45[0m
+[0;32mI (70336) main: current temp:27.48[0m
+[0;32mI (71336) main: current temp:27.39[0m
+[0;32mI (72336) main: current temp:27.36[0m
+[0;32mI (73336) main: current temp:27.15[0m
+[0;32mI (74336) main: current temp:27.09[0m
+[0;32mI (75336) main: current temp:27.06[0m
+[0;32mI (76336) main: current temp:27.15[0m
+[0;32mI (77336) main: current temp:27.00[0m
+[0;32mI (78336) main: current temp:26.90[0m
+[0;32mI (79336) main: current temp:26.93[0m
+[0;32mI (80336) main: current temp:26.87[0m
+[0;32mI (81336) main: current temp:26.81[0m
+[0;32mI (82336) main: current temp:26.75[0m
+[0;32mI (83336) main: current temp:26.75[0m
+[0;32mI (84336) main: current temp:26.81[0m
+[0;32mI (85336) main: current temp:26.49[0m
+[0;32mI (86336) main: current temp:26.43[0m
+[0;32mI (87336) main: current temp:26.46[0m
+[0;32mI (88336) main: current temp:26.55[0m
+[0;32mI (89336) main: current temp:26.28[0m
+[0;32mI (90336) main: current temp:26.31[0m
+[0;32mI (91336) main: current temp:26.16[0m
+[0;32mI (92336) main: current temp:26.08[0m
+[0;32mI (93336) main: current temp:26.04[0m
+[0;32mI (94336) main: current temp:25.98[0m
+[0;32mI (95336) main: current temp:25.98[0m
+[0;32mI (96336) main: current temp:25.89[0m
+[0;32mI (97336) main: current temp:25.89[0m
+[0;32mI (98336) main: current temp:25.92[0m
+[0;32mI (99336) main: current temp:25.69[0m
+[0;32mI (100336) main: current temp:25.63[0m
+[0;32mI (101336) main: current temp:25.86[0m
+[0;32mI (102336) main: current temp:25.69[0m
+[0;32mI (103336) main: current temp:25.69[0m
+[0;32mI (104336) main: current temp:25.54[0m
+[0;32mI (105336) main: current temp:25.45[0m
+[0;32mI (106336) main: current temp:25.48[0m
+[0;32mI (107336) main: current temp:25.31[0m
+[0;32mI (108336) main: current temp:25.31[0m
+[0;32mI (109336) main: current temp:25.31[0m
+[0;32mI (110336) main: current temp:25.16[0m
+[0;32mI (111336) main: current temp:25.25[0m
+[0;32mI (112336) main: current temp:25.04[0m
+[0;32mI (113336) main: current temp:24.97[0m

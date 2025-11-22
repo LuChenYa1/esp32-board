@@ -34,9 +34,8 @@ static bool do_calibration1 = false;            //是否需要校准
 static volatile float s_temp_value = 0.0f;      //室内温度
 
 
-
-static int s_adc_raw[ADC_VALUE_NUM];              //ADC采样值
-static int s_voltage_raw[ADC_VALUE_NUM];              //转换后的电压值
+static int s_adc_raw[ADC_VALUE_NUM];            //ADC采样值
+static int s_voltage_raw[ADC_VALUE_NUM];        //转换后的电压值
 
 
 typedef struct
@@ -194,9 +193,9 @@ void temp_ntc_init(void)
     adc_oneshot_chan_cfg_t config = {
         .bitwidth = ADC_BITWIDTH_12,       //分辨率
         .atten = ADC_ATTEN_DB_12,          
-        //衰减倍数，ESP32设计的ADC参考电压为1100mV,只能测量0-1100mV之间的电压，如果要测量更大范围的电压
-        //需要设置衰减倍数
-        /*以下是对应可测量范围
+        // 衰减倍数，ESP32设计的ADC参考电压为1100mV,只能测量0-1100mV之间的电压，如果要测量更大范围的电压
+        // 需要设置衰减倍数
+        /* 以下是对应可测量范围
         ADC_ATTEN_DB_0	    100 mV ~ 950 mV
         ADC_ATTEN_DB_2_5	100 mV ~ 1250 mV
         ADC_ATTEN_DB_6	    150 mV ~ 1750 mV
@@ -208,7 +207,7 @@ void temp_ntc_init(void)
     do_calibration1 = example_adc_calibration_init(ADC_UNIT_1, ADC_ATTEN_DB_12, &adc1_cali_handle);
 
     //新建一个任务，不断地进行ADC和温度计算
-    xTaskCreatePinnedToCore(temp_adc_task, "adc_task", 2048, NULL,2, NULL, 1);
+    xTaskCreatePinnedToCore(temp_adc_task, "adc_task", 2048, NULL, 2, NULL, 1);
 }
 
 /**
@@ -226,12 +225,14 @@ static void temp_adc_task(void* param)
     uint16_t adc_cnt = 0;
     while(1)
     {
+        /* 读取 ADC 值( 0~4096 ) */
         adc_oneshot_read(s_adc_handle, TEMP_ADC_CHANNEL, &s_adc_raw[adc_cnt]);
         if (do_calibration1) {
+            /* 将 ADC 值转换为电压( 0~3.3V )*/
             adc_cali_raw_to_voltage(adc1_cali_handle, s_adc_raw[adc_cnt], &s_voltage_raw[adc_cnt]);
         }
         adc_cnt++;
-        if(adc_cnt >= 10)
+        if(adc_cnt >= 10)// 采样10次后，计算平均电压值
         {
             int i = 0;
             //用平均值进行滤波
@@ -274,7 +275,7 @@ static float linera_interpolation(int32_t x,int32_t x1, int32_t x2, int32_t y1, 
     float y = k * x + b;
     return y;
 }
-
+ 
 /** 二分查找，通过电阻值查找出温度值对应的下标
  * @param res 电阻值
  * @param left ntc表的左边界
@@ -320,7 +321,8 @@ static float get_ntc_temp(uint32_t res)
     else
     {
         int next_index = index + 1;
-        return linera_interpolation(res, s_ntc_table[index].res, s_ntc_table[next_index].res, 
-        s_ntc_table[index].temp, s_ntc_table[next_index].temp);
+        return linera_interpolation(res, 
+            s_ntc_table[index].res, s_ntc_table[next_index].res, 
+            s_ntc_table[index].temp, s_ntc_table[next_index].temp);
     }
 }
