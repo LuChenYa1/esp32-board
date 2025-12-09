@@ -21,23 +21,24 @@ static const char *TAG = "example";
 
 #define MOUNT_POINT "/sdcard"   //挂载点名称
 
-
-static esp_err_t s_example_write_file(const char *path, char *data)
+/* 向 micro sd 卡写入数据*/
+static esp_err_t prvExample_WriteFile(const char *pcPath, char *pcData)
 {
-    ESP_LOGI(TAG, "Opening file %s", path);
-    FILE *f = fopen(path, "w");
+    ESP_LOGI(TAG, "Opening file %s", pcPath);
+    FILE *f = fopen(pcPath, "w");
     if (f == NULL) {
         ESP_LOGE(TAG, "Failed to open file for writing");
         return ESP_FAIL;
     }
-    fprintf(f, data);
+    fprintf(f, pcData);
     fclose(f);
     ESP_LOGI(TAG, "File written");
 
     return ESP_OK;
 }
 
-static esp_err_t s_example_read_file(const char *path)
+/* 从 micro sd 卡读取数据 */ 
+static esp_err_t prvExample_ReadFile(const char *path)
 {
     ESP_LOGI(TAG, "Reading file %s", path);
     FILE *f = fopen(path, "r");
@@ -49,7 +50,7 @@ static esp_err_t s_example_read_file(const char *path)
     fgets(line, sizeof(line), f);
     fclose(f);
 
-    // strip newline
+    // 在字符串line中查找换行符'\n'的位置，并将其替换为字符串结束符'\0'
     char *pos = strchr(line, '\n');
     if (pos) {
         *pos = '\0';
@@ -61,26 +62,26 @@ static esp_err_t s_example_read_file(const char *path)
 
 void app_main(void)
 {
-    esp_err_t ret;
-    esp_vfs_fat_sdmmc_mount_config_t mount_config = {
+    esp_err_t xRet;
+    esp_vfs_fat_sdmmc_mount_config_t xMountConfig = {
         .format_if_mount_failed = true,     //挂载失败是否执行格式化
         .max_files = 5,                     //最大可打开文件数
         .allocation_unit_size = 16 * 1024   //执行格式化时的分配单元大小（分配单元越大，读写越快）
     };
-    sdmmc_card_t *card;
-    const char mount_point[] = MOUNT_POINT;
+    sdmmc_card_t *xCard;
+    const char cMountPoint[] = MOUNT_POINT;
     ESP_LOGI(TAG, "Initializing SD card");
 
     ESP_LOGI(TAG, "Using SDMMC peripheral");
 
     //默认配置，速度20MHz,使用卡槽1
-    sdmmc_host_t host = SDMMC_HOST_DEFAULT();
+    sdmmc_host_t xHost = SDMMC_HOST_DEFAULT();
 
-    //默认的IO管脚配置，
-    sdmmc_slot_config_t slot_config = SDMMC_SLOT_CONFIG_DEFAULT();
+    //默认的IO管脚配置
+    sdmmc_slot_config_t xSlotConfig = SDMMC_SLOT_CONFIG_DEFAULT();
 
     //4位数据
-    slot_config.width = 4;
+    xSlotConfig.width = 4;
 
     //不适用通过IO矩阵进行映射的管脚，只使用默认支持的SDMMC管脚，可以获得最大性能
     #if 0
@@ -95,33 +96,33 @@ void app_main(void)
     // are insufficient however, please make sure 10k external pullups are
     // connected on the bus. This is for debug / example purpose only.
     //管脚启用内部上拉
-    slot_config.flags |= SDMMC_SLOT_FLAG_INTERNAL_PULLUP;
+    xSlotConfig.flags |= SDMMC_SLOT_FLAG_INTERNAL_PULLUP;
 
     ESP_LOGI(TAG, "Mounting filesystem");
-    ret = esp_vfs_fat_sdmmc_mount(mount_point, &host, &slot_config, &mount_config, &card);
+    xRet = esp_vfs_fat_sdmmc_mount(cMountPoint, &xHost, &xSlotConfig, &xMountConfig, &xCard);
 
-    if (ret != ESP_OK) {
-        if (ret == ESP_FAIL) {
+    if (xRet != ESP_OK) {
+        if (xRet == ESP_FAIL) {
             ESP_LOGE(TAG, "Failed to mount filesystem. ");
         } else {
             ESP_LOGE(TAG, "Failed to initialize the card (%s). "
-                     "Make sure SD card lines have pull-up resistors in place.", esp_err_to_name(ret));
+                     "Make sure SD card lines have pull-up resistors in place.", esp_err_to_name(xRet));
         }
         return;
     }
     ESP_LOGI(TAG, "Filesystem mounted");
 
     // Card has been initialized, print its properties
-    sdmmc_card_print_info(stdout, card);
+    sdmmc_card_print_info(stdout, xCard);
 
     // Use POSIX and C standard library functions to work with files:
 
     // First create a file.
     const char *file_hello = MOUNT_POINT"/hello.txt";
     char data[EXAMPLE_MAX_CHAR_SIZE];
-    snprintf(data, EXAMPLE_MAX_CHAR_SIZE, "%s %s!\n", "Hello", card->cid.name);
-    ret = s_example_write_file(file_hello, data);
-    if (ret != ESP_OK) {
+    snprintf(data, EXAMPLE_MAX_CHAR_SIZE, "%s %s!\n", "Hello", xCard->cid.name);
+    xRet = prvExample_WriteFile(file_hello, data);
+    if (xRet != ESP_OK) {
         return;
     }
 
@@ -140,8 +141,8 @@ void app_main(void)
         return;
     }
 
-    ret = s_example_read_file(file_foo);
-    if (ret != ESP_OK) {
+    xRet = prvExample_ReadFile(file_foo);
+    if (xRet != ESP_OK) {
         return;
     }
 
@@ -162,19 +163,19 @@ void app_main(void)
     #endif
     const char *file_nihao = MOUNT_POINT"/nihao.txt";
     memset(data, 0, EXAMPLE_MAX_CHAR_SIZE);
-    snprintf(data, EXAMPLE_MAX_CHAR_SIZE, "%s %s!\n", "Nihao", card->cid.name);
-    ret = s_example_write_file(file_nihao, data);
-    if (ret != ESP_OK) {
+    snprintf(data, EXAMPLE_MAX_CHAR_SIZE, "%s %s!\n", "Nihao", xCard->cid.name);
+    xRet = prvExample_WriteFile(file_nihao, data);
+    if (xRet != ESP_OK) {
         return;
     }
 
     //Open file for reading
-    ret = s_example_read_file(file_nihao);
-    if (ret != ESP_OK) {
+    xRet = prvExample_ReadFile(file_nihao);
+    if (xRet != ESP_OK) {
         return;
     }
 
     // All done, unmount partition and disable SDMMC peripheral
-    esp_vfs_fat_sdcard_unmount(mount_point, card);
+    esp_vfs_fat_sdcard_unmount(cMountPoint, xCard);
     ESP_LOGI(TAG, "Card unmounted");
 }
