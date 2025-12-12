@@ -85,15 +85,15 @@ void app_main(void)
     esp_vfs_fat_sdmmc_mount_config_t xMountConfig = {
         .format_if_mount_failed = true,     //挂载失败是否执行格式化
         .max_files = 5,                     //最大可打开文件数
-        .allocation_unit_size = 16 * 1024   //执行格式化时的分配单元大小（分配单元越大，读写越快）
+        .allocation_unit_size = 4 * 1024    //执行格式化时的分配单元大小（分配单元越大，读写越快, 但利用率越低）
     };
     sdmmc_card_t *xCard;
-    const char cMountPoint[] = MOUNT_POINT;
+    const char cMountPoint[] = MOUNT_POINT; // 指定挂载点名称
 
     ESP_LOGI(TAG, "Initializing SD card");
     ESP_LOGI(TAG, "Using SDMMC peripheral");
 
-    /* 默认配置，速度20MHz,使用卡槽1 */
+    /* 默认配置，速度20MHz,使用卡槽1( 卡槽0和 flash 引脚有冲突 ) */
     sdmmc_host_t xHost = SDMMC_HOST_DEFAULT();
 
     /* 默认的IO管脚配置 */
@@ -106,7 +106,7 @@ void app_main(void)
      */
     xSlotConfig.flags |= SDMMC_SLOT_FLAG_INTERNAL_PULLUP;
 
-    /* 不适用通过IO矩阵进行映射的管脚，只使用默认支持的SDMMC管脚，可以获得最大性能 */
+    /* 使用默认支持的SDMMC管脚, 不使用通过IO矩阵进行功能映射的管脚，因为可以获得最大性能 */
     #if 0
     slot_config.clk = CONFIG_EXAMPLE_PIN_CLK;
     slot_config.cmd = CONFIG_EXAMPLE_PIN_CMD;
