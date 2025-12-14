@@ -9,10 +9,10 @@
 // 主函数
 void app_main(void)
 {
-    lv_port_init();                 //初始化LVGL
-    lv_demo_widgets();              //初始化控件demo程序
+    lv_port_init();            // 初始化 LVGL
+    lv_demo_widgets();         // 初始化控件demo程序
     //lv_demo_stress();
-    st7789_lcd_backlight(true);         //打开背光
+    vSt7789LcdBackLight(true); // 打开背光
     while(1)
     {
         vTaskDelay(pdMS_TO_TICKS(10));
