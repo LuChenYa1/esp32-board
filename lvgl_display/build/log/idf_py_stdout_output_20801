@@ -1,0 +1,57 @@
+[1/5] cd /home/luchenya/project/01_learning_notes/esp32/esp32-board/lvgl_display/build/esp-idf/esptool_py && /home/luchenya/.espressif/python_env/idf5.2_py3.10_env/bin/python /home/luchenya/project/01_learning_notes/esp32/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 partition --type app /home/luchenya/project/01_learning_notes/esp32/esp32-board/lvgl_display/build/partition_table/partition-table.bin /home/luchenya/project/01_learning_notes/esp32/esp32-board/lvgl_display/build/lvgl_display.bin
+lvgl_display.bin binary size 0x91480 bytes. Smallest app partition is 0x100000 bytes. 0x6eb80 bytes (43%) free.
+[2/5] Performing build step for 'bootloader'
+[1/1] cd /home/luchenya/project/01_learning_notes/esp32/esp32-board/lvgl_display/build/bootloader/esp-idf/esptool_py && /home/luchenya/.espressif/python_env/idf5.2_py3.10_env/bin/python /home/luchenya/project/01_learning_notes/esp32/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 bootloader 0x1000 /home/luchenya/project/01_learning_notes/esp32/esp32-board/lvgl_display/build/bootloader/bootloader.bin
+Bootloader binary size 0x6850 bytes. 0x7b0 bytes (7%) free.
+[2/3] cd /home/luchenya/project/01_learning_notes/esp32/esp-idf/components/esptool_py && /usr/bin/cmake -D IDF_PATH=/home/luchenya/project/01_learning_notes/esp32/esp-idf -D "SERIAL_TOOL=/home/luchenya/.espressif/python_env/idf5.2_py3.10_env/bin/python;;/home/luchenya/project/01_learning_notes/esp32/esp-idf/components/esptool_py/esptool/esptool.py;--chip;esp32" -D "SERIAL_TOOL_ARGS=--before=default_reset;--after=hard_reset;write_flash;@flash_args" -D WORKING_DIRECTORY=/home/luchenya/project/01_learning_notes/esp32/esp32-board/lvgl_display/build -P /home/luchenya/project/01_learning_notes/esp32/esp-idf/components/esptool_py/run_serial_tool.cmake
+esptool.py --chip esp32 -p /dev/ttyUSB0 -b 460800 --before=default_reset --after=hard_reset write_flash --flash_mode dio --flash_freq 40m --flash_size 4MB 0x1000 bootloader/bootloader.bin 0x10000 lvgl_display.bin 0x8000 partition_table/partition-table.bin
+esptool.py v4.10.0
+Serial port /dev/ttyUSB0
+Connecting....
+Chip is ESP32-D0WDR2-V3 (revision v3.1)
+Features: WiFi, BT, Dual Core, 240MHz, VRef calibration in efuse, Coding Scheme None
+Crystal is 40MHz
+MAC: 44:1d:64:46:50:28
+Uploading stub...
+Running stub...
+Stub running...
+Changing baud rate to 460800
+Changed.
+Configuring flash size...
+Flash will be erased from 0x00001000 to 0x00007fff...
+Flash will be erased from 0x00010000 to 0x000a1fff...
+Flash will be erased from 0x00008000 to 0x00008fff...
+SHA digest in image updated
+Compressed 26704 bytes to 16348...
+Writing at 0x00001000... (100 %)
+Wrote 26704 bytes (16348 compressed) at 0x00001000 in 0.6 seconds (effective 378.8 kbit/s)...
+Hash of data verified.
+Compressed 595072 bytes to 303367...
+Writing at 0x00010000... (5 %)
+Writing at 0x000209bf... (10 %)
+Writing at 0x0002bbfb... (15 %)
+Writing at 0x000395b5... (21 %)
+Writing at 0x00041985... (26 %)
+Writing at 0x00047ba8... (31 %)
+Writing at 0x0004e90f... (36 %)
+Writing at 0x00054969... (42 %)
+Writing at 0x0005a5d4... (47 %)
+Writing at 0x00060c31... (52 %)
+Writing at 0x00067024... (57 %)
+Writing at 0x0006ce4d... (63 %)
+Writing at 0x00072be3... (68 %)
+Writing at 0x00079476... (73 %)
+Writing at 0x0007f820... (78 %)
+Writing at 0x00089dec... (84 %)
+Writing at 0x00091eaa... (89 %)
+Writing at 0x00097a03... (94 %)
+Writing at 0x0009e034... (100 %)
+Wrote 595072 bytes (303367 compressed) at 0x00010000 in 6.9 seconds (effective 690.1 kbit/s)...
+Hash of data verified.
+Compressed 3072 bytes to 103...
+Writing at 0x00008000... (100 %)
+Wrote 3072 bytes (103 compressed) at 0x00008000 in 0.0 seconds (effective 806.8 kbit/s)...
+Hash of data verified.
+
+Leaving...
+Hard resetting via RTS pin...

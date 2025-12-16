@@ -9,7 +9,7 @@
 
 static const char *TAG = "cst816t";
 
-// 边界值
+/* 边界值 */ 
 static uint16_t xUsLimitX = 0;
 static uint16_t xUsLimitY = 0;
 
@@ -64,7 +64,7 @@ void vCst816tRead(int16_t *x, int16_t *y, int *iState)
     static int16_t iLastx = 0;     // 12bit pixel value( 上一次的坐标 )
     static int16_t iLastY = 0;     // 12bit pixel value
 
-    /* 读取触摸点数量, 如果触摸点数量为0或者多个则返回0 */
+    /* 读取触摸点数量, 如果触摸点数量为0或者多个则返回0, 不支持多点触摸 */
     prvI2CRead(CST816T_ADDR, 0x02, 1, &ucTouchPointCount);
     if (ucTouchPointCount != 1) {  // ignore no touch & multi touch
         *x = iLastx;
@@ -128,6 +128,7 @@ static esp_err_t prvI2CRead(uint8_t ucSlaveAddr, uint8_t ucRegisterAddr, uint8_t
     }
     i2c_master_stop(xI2CCmd);
 
+    /* 确保以上步骤执行完毕 */
     esp_err_t xRet = i2c_master_cmd_begin(TOUCH_I2C_PORT, xI2CCmd, pdMS_TO_TICKS(1000));
     i2c_cmd_link_delete(xI2CCmd);
     return xRet;

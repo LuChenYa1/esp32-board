@@ -1,0 +1,11 @@
+{
+  "C_Cpp.intelliSenseEngine": "default",
+  "idf.espIdfPath": "/home/luchenya/project/01_learning_notes/esp32/esp-idf" // 确保添加这一行
+
+  // 确保CMake Tools能获取到正确的环境变量
+  "cmake.autoSelectActiveFolder": false,
+  // 防止C/C++扩展自动覆盖配置，是核心设置
+  "C_Cpp.autocomplete": "disabled",
+  "C_Cpp.errorSquiggles": "disabled",
+  "C_Cpp.configurationWarnings": "disabled"
+}

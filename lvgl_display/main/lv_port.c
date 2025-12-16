@@ -1,141 +1,226 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "lvgl.h"
+#include "esp_err.h"
 #include "esp_log.h"
+#include "esp_timer.h"
+#include "driver/gpio.h"
+#include "lv_port.h"
+#include "lvgl.h"
 #include "st7789_driver.h"
 #include "cst816t_driver.h"
-#include "driver/gpio.h"
-#include "esp_timer.h"
 
-/*
-1.初始化和注册LVGL显示驱动
-2.初始化和注册LVGL触摸驱动
-3.初始化ST7789硬件接口
-4.初始化CST816T硬件接口
-5.提供一个定时器给LVGL使用
-*/
+/* 
+ * 移植步骤
+   1、创建并初始化 LVGL 显示驱动
+   2、创建并初始化 LVGL 触摸驱动
+   3、初始化 st7789 硬件接口
+   4、初始化 cst816 硬件接口
+   5、提供一个定时器给 LVGL 使用
+ */
 
-#define TAG     "lv_port"
+static lv_disp_drv_t xDisplayDriver;
+static const char *TAG = "lv_port";
 
-#define LCD_WIDTH       240
-#define LCD_HEIGHT      280
+#define LCD_WIDTH   280
+#define LCD_HEIGHT  240
 
-static lv_disp_drv_t    disp_drv;
-
-void lv_flush_done_cb(void* param)
+/**
+ * @brief LVGL 定时器时钟
+ *
+ * @param pvParam 无用
+ */
+static void prvLvTickIncCb(void *pvData)
 {
-    lv_disp_flush_ready(&disp_drv);
+    uint32_t ulTickIncPeriodMS = *((uint32_t *) pvData);
+    lv_tick_inc(ulTickIncPeriodMS);
 }
 
-void disp_flush(struct _lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_color_t * color_p)
+/**
+ * @brief 通知 LVGL 写入数据完毕
+ */
+static void prvLvPortFlushReady(void* param)
 {
-    st7789_flush(area->x1,area->x2 + 1,area->y1+20,area->y2+20 + 1,color_p);
+    lv_disp_flush_ready(&xDisplayDriver);
+
+    /* portYIELD_FROM_ISR (true) or not (false). */
 }
 
-void lv_disp_init(void)
+/**
+ * @brief 写入显示数据
+ *
+ * @param xDisplayDriver  对应的显示器
+ * @param area      显示区域
+ * @param color_p   显示数据
+ */
+static void prvDisplayFlush(lv_disp_drv_t *disp_drv, const lv_area_t *area, lv_color_t *color_p)
 {
-    static lv_disp_draw_buf_t   disp_buf;
-    const size_t disp_buf_size = LCD_WIDTH*(LCD_HEIGHT/7);
+    (void) disp_drv;
+    vSt7789Flush(area->x1 + 20, area->x2 + 1 + 20, area->y1,area->y2 + 1, color_p);
+}
 
-    lv_color_t *disp1 = heap_caps_malloc(disp_buf_size*sizeof(lv_color_t),MALLOC_CAP_INTERNAL|MALLOC_CAP_DMA);
-    lv_color_t *disp2 = heap_caps_malloc(disp_buf_size*sizeof(lv_color_t),MALLOC_CAP_INTERNAL|MALLOC_CAP_DMA);
-    if(!disp1 || !disp2)
-    {
-        ESP_LOGE(TAG,"disp buff malloc fail!");
-        return;
+/**
+ * @brief 注册 LVGL 显示驱动
+ *
+ */
+static void prvLvPortDisplayInit(void)
+{
+    static lv_disp_draw_buf_t xDrawBufferDsc;
+    size_t xDispBufHeight = 40;
+
+    /* 必须从内部RAM分配显存，这样刷新速度快 */
+    lv_color_t *pxDispBuffer1 = heap_caps_malloc(LCD_WIDTH * xDispBufHeight * sizeof(lv_color_t), MALLOC_CAP_INTERNAL | MALLOC_CAP_DMA);
+    lv_color_t *pxDispBuffer2 = heap_caps_malloc(LCD_WIDTH * xDispBufHeight * sizeof(lv_color_t), MALLOC_CAP_INTERNAL | MALLOC_CAP_DMA);
+    ESP_LOGI(TAG, "Try allocate two %u * %u display buffer, size:%u Byte", LCD_WIDTH, xDispBufHeight, LCD_WIDTH * xDispBufHeight * sizeof(lv_color_t) * 2);
+    if (NULL == pxDispBuffer1 || NULL == pxDispBuffer2) {
+        ESP_LOGE(TAG, "No memory for LVGL display buffer");
+        esp_system_abort("Memory allocation failed");
     }
-    lv_disp_draw_buf_init(&disp_buf,disp1,disp2,disp_buf_size);
 
-    lv_disp_drv_init(&disp_drv);
+    /* 初始化显示缓存 */
+    lv_disp_draw_buf_init(&xDrawBufferDsc, pxDispBuffer1, pxDispBuffer2, LCD_WIDTH * xDispBufHeight);
 
-    disp_drv.hor_res = LCD_WIDTH;
-    disp_drv.ver_res = LCD_HEIGHT;
-    disp_drv.draw_buf = &disp_buf;
-    disp_drv.flush_cb = disp_flush;
-    lv_disp_drv_register(&disp_drv);
+    /* 初始化显示驱动 */
+    lv_disp_drv_init(&xDisplayDriver);
+
+    /* 设置水平和垂直宽度 */
+    xDisplayDriver.hor_res = LCD_WIDTH;       //水平宽度
+    xDisplayDriver.ver_res = LCD_HEIGHT;      //垂直宽度
+
+    /* 设置刷新数据函数 */
+    xDisplayDriver.flush_cb = prvDisplayFlush;
+
+    /* 设置显示缓存 */
+    xDisplayDriver.draw_buf = &xDrawBufferDsc;
+
+    /* 注册显示驱动 */
+    lv_disp_drv_register(&xDisplayDriver);
 }
 
-void IRAM_ATTR indev_read(struct _lv_indev_drv_t * indev_drv, lv_indev_data_t * data)
+
+/**
+ * @brief 获取触摸坐标
+ *
+ * @param xIndevDriver  触摸驱动
+ * @param pvData      数据
+ * @return 无
+ */
+void IRAM_ATTR vIndevRead(struct _lv_indev_drv_t * indev_drv, lv_indev_data_t * pxData)
 {
-    int16_t x,y;
+    int16_t x, y;
     int state;
-    cst816t_read(&x,&y,&state);
-    data->point.x = x;
-    data->point.y = y;
-    data->state = state;
+    vCst816tRead(&x, &y, &state);
+    pxData->point.x = y; // 旋转了90度
+    if(x == 0)
+        x = 1;
+    pxData->point.y = LCD_HEIGHT - x;
+    pxData->state = state;
 }
 
-void lv_indev_init(void)
+/**
+ * @brief 注册 LVGL 输入驱动
+ *
+ * @return esp_err_t
+ */
+static esp_err_t prvLvPortIndevInit(void)
 {
-    static lv_indev_drv_t indev_drv;
-    lv_indev_drv_init(&indev_drv);
-    indev_drv.type = LV_INDEV_TYPE_POINTER;
-    indev_drv.read_cb = indev_read;
-    lv_indev_drv_register(&indev_drv);
+    static lv_indev_drv_t xIndevDriver;
+    lv_indev_drv_init(&xIndevDriver);
+    xIndevDriver.type = LV_INDEV_TYPE_POINTER;
+    xIndevDriver.read_cb = vIndevRead;
+    lv_indev_drv_register(&xIndevDriver);
+    return ESP_OK;
 }
 
-void st7789_hw_init(void)
+/**
+ * @brief 创建LVGL定时器
+ *
+ * @return esp_err_t
+ */
+static esp_err_t prvLvPortTickInit(void)
 {
-    st7789_cfg_t st7789_config = {
-        .bl = GPIO_NUM_26,
-        .clk = GPIO_NUM_18,
-        .cs = GPIO_NUM_5,
-        .dc = GPIO_NUM_17,
-        .mosi = GPIO_NUM_19,
-        .rst = GPIO_NUM_21,
-        .spi_fre = 40*1000*1000,
-        .height = LCD_HEIGHT,
-        .width = LCD_WIDTH,
-        .spin = 0,
-        .done_cb = lv_flush_done_cb,
-        .cb_param = &disp_drv,
-    };
-
-    st7789_driver_hw_init(&st7789_config);
-}
-
-void cst816t_hw_init(void)
-{
-    cst816t_cfg_t cst816t_config = 
-    {
-        .scl = GPIO_NUM_22,
-        .sda = GPIO_NUM_23,
-        .fre = 300*1000,
-        .x_limit = LCD_WIDTH,
-        .y_limit = LCD_HEIGHT,
-    };
-    cst816t_init(&cst816t_config);
-}
-
-void lv_timer_cb(void* arg)
-{
-    uint32_t tick_interval = *((uint32_t*)arg);
-    lv_tick_inc(tick_interval);
-}
-
-void lv_tick_init(void)
-{
-    static uint32_t tick_interval = 5;
-    const esp_timer_create_args_t arg = 
-    {
-        .arg = &tick_interval,
-        .callback = lv_timer_cb,
+    static uint32_t ulTickIncPeriodMS = 5;
+    const esp_timer_create_args_t xPeriodicTimerArgs = {
+        .callback = prvLvTickIncCb,
         .name = "",
+        .arg = &ulTickIncPeriodMS,
         .dispatch_method = ESP_TIMER_TASK,
         .skip_unhandled_events = true,
     };
 
-    esp_timer_handle_t timer_handle;
-    esp_timer_create(&arg,&timer_handle);
-    esp_timer_start_periodic(timer_handle,tick_interval*1000);
+    esp_timer_handle_t xPeriodicTimer;
+    ESP_ERROR_CHECK(esp_timer_create(&xPeriodicTimerArgs, &xPeriodicTimer));
+    ESP_ERROR_CHECK(esp_timer_start_periodic(xPeriodicTimer, ulTickIncPeriodMS * 1000));
+
+    return ESP_OK;
 }
 
-void lv_port_init(void)
+/**
+ * @brief LCD 显示接口初始化
+ *
+ * @return NULL
+ */
+static void prvLcdInit(void)
 {
+    St7789Config_t xSt7789Config;
+    xSt7789Config.xMOSI = GPIO_NUM_19;
+    xSt7789Config.xClk = GPIO_NUM_18;
+    xSt7789Config.xCS = GPIO_NUM_5;
+    xSt7789Config.xDC = GPIO_NUM_17;
+    xSt7789Config.xRst = GPIO_NUM_21;
+    xSt7789Config.xBL = GPIO_NUM_26;
+    xSt7789Config.ulSPIFreq = 40*1000*1000;             // SPI 时钟频率
+    xSt7789Config.uiWidth = LCD_WIDTH;                  // 屏宽
+    xSt7789Config.uiHeight = LCD_HEIGHT;                // 屏高
+    xSt7789Config.ucSpin = 1;                           // 顺时针旋转90度
+    xSt7789Config.pvDoneCallback = prvLvPortFlushReady; // 数据写入完成回调函数
+    xSt7789Config.pvCallbackParam = &xDisplayDriver;          // 回调函数参数
+
+    xSt7789DriverHwInit(&xSt7789Config);
+}
+
+/**
+ * @brief LCD触摸接口初始化
+ *
+ * @return NULL
+ */
+static void prvCst816tInit(void)
+{
+    Cst816tConfig_t xCst816tConfig;
+    xCst816tConfig.xSDA = GPIO_NUM_23;
+    xCst816tConfig.xSCL = GPIO_NUM_22;
+    xCst816tConfig.uiXLimit = LCD_HEIGHT; // 由于屏幕显示旋转了90°，X和Y触摸需要调转
+    xCst816tConfig.uiYLimit = LCD_WIDTH;
+    //xCst816tConfig.uiXLimit = LCD_WIDTH;
+    //xCst816tConfig.uiYLimit = LCD_HEIGHT;
+    xCst816tConfig.ulFreq = 200 * 1000;
+    
+    xCst816tInit(&xCst816tConfig);
+}
+
+/**
+ * @brief LVGL 端口初始化
+ *
+ * @return esp_err_t
+ */
+esp_err_t xLvPortInit(void)
+{
+    /* 初始化 LVGL 库 */
     lv_init();
-    st7789_hw_init();
-    cst816t_hw_init();
-    lv_disp_init();
-    lv_indev_init();
-    lv_tick_init();
+
+    /* 1、lcd 显示接口（st7789）初始化 */
+    prvLcdInit();
+
+    /* 2、注册显示驱动 */
+    prvLvPortDisplayInit();
+
+    /* 3、lcd 触摸接口（cst816t）初始化 */
+    prvCst816tInit();
+
+    /* 4、注册触摸驱动 */
+    prvLvPortIndevInit();
+
+    /* 5、初始化 LVGL 定时器 */
+    prvLvPortTickInit();
+
+    return ESP_OK;
 }

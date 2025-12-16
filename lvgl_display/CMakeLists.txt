@@ -4,7 +4,8 @@
 # CMakeLists in this exact order for cmake to work correctly
 cmake_minimum_required(VERSION 3.16)
 
+# 添加组件目录
+set(EXTRA_COMPONENT_DIRS ./components)
+
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 project(lvgl_display)
-
-set(EXTRA_COMPONENT_DIRS ./components)

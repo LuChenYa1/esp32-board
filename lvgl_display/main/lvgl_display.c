@@ -11,9 +11,10 @@
 
 void app_main(void)
 {
-    lv_port_init();
-    st7789_lcd_backlight(1);
+    xLvPortInit(); // lvgl 初始化
+    vSt7789LcdBackLight(1); // 打开背光
     //lv_demo_widgets();
+
     #if 0
     ui_led_create();
 
@@ -29,6 +30,7 @@ void app_main(void)
 
     gpio_set_level(GPIO_NUM_27,0);
 #endif
+
     ui_home_create();
     while(1)
     {
