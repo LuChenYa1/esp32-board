@@ -1,7 +1,7 @@
 {
     "version":            "1.1",
     "project_name":       "ws2812",
-    "project_version":    "c3cd2a9-dirty",
+    "project_version":    "6c6dc0f-dirty",
     "project_path":       "/home/luchenya/project/01_learning_notes/esp32/esp32-board/ws2812",
     "idf_path":           "/home/luchenya/project/01_learning_notes/esp32/esp-idf",
     "build_dir":          "/home/luchenya/project/01_learning_notes/esp32/esp32-board/ws2812/build",

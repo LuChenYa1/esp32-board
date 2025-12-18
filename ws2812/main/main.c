@@ -10,8 +10,8 @@
 #include "driver/rmt_tx.h"
 #include "led_ws2812.h"
 
-#define WS2812_GPIO_NUM     GPIO_NUM_26
-#define WS2812_LED_NUM      12
+#define WS2812_GPIO_NUM GPIO_NUM_26
+#define WS2812_LED_NUM 12
 
 /*
  * RMT 是 ESP32 的一个专用外设，本质上是一个可编程的脉冲序列发生器/分析器。
@@ -32,7 +32,7 @@
  * @param h:色调(0-360) s饱和度(0-100) v亮度(0-100)
  * @param rgb
  * @return 无
-*/
+ */
 void led_strip_hsv2rgb(uint32_t h, uint32_t s, uint32_t v, uint32_t *r, uint32_t *g, uint32_t *b)
 {
     h %= 360; // h -> [0,360]
@@ -45,7 +45,8 @@ void led_strip_hsv2rgb(uint32_t h, uint32_t s, uint32_t v, uint32_t *r, uint32_t
     // RGB adjustment amount by hue
     uint32_t rgb_adj = (rgb_max - rgb_min) * diff / 60;
 
-    switch (i) {
+    switch (i)
+    {
     case 0:
         *r = rgb_max;
         *g = rgb_min + rgb_adj;
@@ -83,50 +84,50 @@ void app_main(void)
 {
     ws2812_strip_handle_t ws2812_handle = NULL;
     int index = 0;
-    ws2812_init(WS2812_GPIO_NUM,WS2812_LED_NUM,&ws2812_handle);
+    ws2812_init(WS2812_GPIO_NUM, WS2812_LED_NUM, &ws2812_handle);
 
-    while(1)
+    while (1)
     {
-        //红色跑马灯
-        for(index = 0;index < 4;index++)
+        // 红色跑马灯
+        for (index = 0; index < 4; index++)
         {
-            uint32_t r = 230,g = 20,b = 20;
-            ws2812_write(ws2812_handle,index,r,g,b);
+            uint32_t r = 230, g = 20, b = 20;
+            ws2812_write(ws2812_handle, index, r, g, b);
             vTaskDelay(pdMS_TO_TICKS(80));
         }
-        //绿色跑马灯
-        for(index = 4;index < 8;index++)
+        // 绿色跑马灯
+        for (index = 4; index < 8; index++)
         {
-            uint32_t r = 20,g = 230,b = 20;
-            ws2812_write(ws2812_handle,index,r,g,b);
+            uint32_t r = 20, g = 230, b = 20;
+            ws2812_write(ws2812_handle, index, r, g, b);
             vTaskDelay(pdMS_TO_TICKS(80));
         }
-        //蓝色跑马灯
-        for(index = 8;index < 12;index++)
+        // 蓝色跑马灯
+        for (index = 8; index < 12; index++)
         {
-            uint32_t r = 20,g = 20,b = 230;
-            ws2812_write(ws2812_handle,index,r,g,b);
+            uint32_t r = 20, g = 20, b = 230;
+            ws2812_write(ws2812_handle, index, r, g, b);
             vTaskDelay(pdMS_TO_TICKS(80));
         }
-        //蓝色跑马灯
-        for(index = 0;index < 4;index++)
+        // 蓝色跑马灯
+        for (index = 0; index < 4; index++)
         {
-            uint32_t r = 20,g = 20,b = 230;
-            ws2812_write(ws2812_handle,index,r,g,b);
+            uint32_t r = 20, g = 20, b = 230;
+            ws2812_write(ws2812_handle, index, r, g, b);
             vTaskDelay(pdMS_TO_TICKS(80));
         }
-        //红色跑马灯
-        for(index = 4;index < 8;index++)
+        // 红色跑马灯
+        for (index = 4; index < 8; index++)
         {
-            uint32_t r = 230,g = 20,b = 20;
-            ws2812_write(ws2812_handle,index,r,g,b);
+            uint32_t r = 230, g = 20, b = 20;
+            ws2812_write(ws2812_handle, index, r, g, b);
             vTaskDelay(pdMS_TO_TICKS(80));
         }
-        //绿色跑马灯
-        for(index = 8;index < 12;index++)
+        // 绿色跑马灯
+        for (index = 8; index < 12; index++)
         {
-            uint32_t r = 20,g = 230,b = 20;
-            ws2812_write(ws2812_handle,index,r,g,b);
+            uint32_t r = 20, g = 230, b = 20;
+            ws2812_write(ws2812_handle, index, r, g, b);
             vTaskDelay(pdMS_TO_TICKS(80));
         }
     }

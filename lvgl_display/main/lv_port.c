@@ -29,7 +29,7 @@ static const char *TAG = "lv_port";
  *
  * @param pvParam 无用
  */
-static void prvLvTickIncCb(void *pvData)
+static void prvLvTickIncCallback(void *pvData)
 {
     uint32_t ulTickIncPeriodMS = *((uint32_t *) pvData);
     lv_tick_inc(ulTickIncPeriodMS);
@@ -140,7 +140,7 @@ static esp_err_t prvLvPortTickInit(void)
 {
     static uint32_t ulTickIncPeriodMS = 5;
     const esp_timer_create_args_t xPeriodicTimerArgs = {
-        .callback = prvLvTickIncCb,
+        .callback = prvLvTickIncCallback,
         .name = "",
         .arg = &ulTickIncPeriodMS,
         .dispatch_method = ESP_TIMER_TASK,

@@ -3,16 +3,16 @@
 #include <stdint.h>
 
 /** DHT11初始化
- * @param dht11_pin GPIO引脚
+ * @param xDht11Pin GPIO引脚
  * @return 无
 */
-void DHT11_Init(uint8_t dht11_pin);
+void vDht11Init(uint8_t xDht11Pin);
 
 /** 获取DHT11数据
- * @param temp_x10 温度值X10
- * @param humidity 湿度值
+ * @param piTempX10 温度值X10
+ * @param piHumidity 湿度值
  * @return 无
 */
-int DHT11_StartGet(int *temp_x10, int *humidity);
+int iDht11StartGet(int *piTempX10, int *piHumidity);
 
 #endif
