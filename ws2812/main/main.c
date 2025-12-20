@@ -10,6 +10,7 @@
 #include "driver/rmt_tx.h"
 #include "led_ws2812.h"
 
+/* 原定的 ws2812 RGB 引脚 为 GPIO 26, 但和 LCD 背光冲突，故改为 GPIO 32 */
 #define WS2812_GPIO_NUM GPIO_NUM_26
 #define WS2812_LED_NUM 12
 
@@ -33,7 +34,7 @@
  * @param rgb
  * @return 无
  */
-void led_strip_hsv2rgb(uint32_t h, uint32_t s, uint32_t v, uint32_t *r, uint32_t *g, uint32_t *b)
+void vLedStripHsv2Rgb(uint32_t h, uint32_t s, uint32_t v, uint32_t *r, uint32_t *g, uint32_t *b)
 {
     h %= 360; // h -> [0,360]
     uint32_t rgb_max = v * 2.55f;
@@ -42,11 +43,10 @@ void led_strip_hsv2rgb(uint32_t h, uint32_t s, uint32_t v, uint32_t *r, uint32_t
     uint32_t i = h / 60;
     uint32_t diff = h % 60;
 
-    // RGB adjustment amount by hue
+    /* RGB adjustment amount by hue */ 
     uint32_t rgb_adj = (rgb_max - rgb_min) * diff / 60;
 
-    switch (i)
-    {
+    switch (i){
     case 0:
         *r = rgb_max;
         *g = rgb_min + rgb_adj;
@@ -82,52 +82,46 @@ void led_strip_hsv2rgb(uint32_t h, uint32_t s, uint32_t v, uint32_t *r, uint32_t
 
 void app_main(void)
 {
-    ws2812_strip_handle_t ws2812_handle = NULL;
-    int index = 0;
-    ws2812_init(WS2812_GPIO_NUM, WS2812_LED_NUM, &ws2812_handle);
+    Ws2812StripHandle_t xWs2812Handle = NULL;
+    int iIndex = 0;
+    xWs2812Init(WS2812_GPIO_NUM, WS2812_LED_NUM, &xWs2812Handle);
 
     while (1)
     {
-        // 红色跑马灯
-        for (index = 0; index < 4; index++)
-        {
+        /* 红色跑马灯 */ 
+        for (iIndex = 0; iIndex < 4; iIndex++){
             uint32_t r = 230, g = 20, b = 20;
-            ws2812_write(ws2812_handle, index, r, g, b);
+            xWs2812Write(xWs2812Handle, iIndex, r, g, b);
             vTaskDelay(pdMS_TO_TICKS(80));
         }
-        // 绿色跑马灯
-        for (index = 4; index < 8; index++)
-        {
+        /* 绿色跑马灯 */ 
+        for (iIndex = 4; iIndex < 8; iIndex++){
             uint32_t r = 20, g = 230, b = 20;
-            ws2812_write(ws2812_handle, index, r, g, b);
+            xWs2812Write(xWs2812Handle, iIndex, r, g, b);
             vTaskDelay(pdMS_TO_TICKS(80));
         }
-        // 蓝色跑马灯
-        for (index = 8; index < 12; index++)
-        {
+        /* 蓝色跑马灯 */ 
+        for (iIndex = 8; iIndex < 12; iIndex++){
             uint32_t r = 20, g = 20, b = 230;
-            ws2812_write(ws2812_handle, index, r, g, b);
+            xWs2812Write(xWs2812Handle, iIndex, r, g, b);
             vTaskDelay(pdMS_TO_TICKS(80));
         }
-        // 蓝色跑马灯
-        for (index = 0; index < 4; index++)
-        {
+        /* 蓝色跑马灯 */ 
+        for (iIndex = 0; iIndex < 4; iIndex++){
             uint32_t r = 20, g = 20, b = 230;
-            ws2812_write(ws2812_handle, index, r, g, b);
+            xWs2812Write(xWs2812Handle, iIndex, r, g, b);
             vTaskDelay(pdMS_TO_TICKS(80));
         }
-        // 红色跑马灯
-        for (index = 4; index < 8; index++)
-        {
+        /* 红色跑马灯 */ 
+        for (iIndex = 4; iIndex < 8; iIndex++){
             uint32_t r = 230, g = 20, b = 20;
-            ws2812_write(ws2812_handle, index, r, g, b);
+            xWs2812Write(xWs2812Handle, iIndex, r, g, b);
             vTaskDelay(pdMS_TO_TICKS(80));
         }
-        // 绿色跑马灯
-        for (index = 8; index < 12; index++)
-        {
+        /* 绿色跑马灯 */ 
+        for (iIndex = 8; iIndex < 12; iIndex++){
             uint32_t r = 20, g = 230, b = 20;
-            ws2812_write(ws2812_handle, index, r, g, b);
+            xWs2812Write(xWs2812Handle, iIndex, r, g, b);
             vTaskDelay(pdMS_TO_TICKS(80));
         }
     }
