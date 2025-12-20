@@ -18,7 +18,7 @@ void app_main()
     // lv_demo_widgets(); // 启动官方 demo
     // lv_demo_music();
 
-#if 0
+#if 1
     vUILedCreate();
     gpio_config_t xLedGPIO = {
         .pull_up_en = GPIO_PULLUP_DISABLE,
