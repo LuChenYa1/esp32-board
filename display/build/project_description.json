@@ -1,7 +1,7 @@
 {
     "version":            "1.1",
     "project_name":       "display",
-    "project_version":    "cf4701b-dirty",
+    "project_version":    "6bad4b0-dirty",
     "project_path":       "/home/luchenya/project/01_learning_notes/esp32/esp32-board/display",
     "idf_path":           "/home/luchenya/project/01_learning_notes/esp32/esp-idf",
     "build_dir":          "/home/luchenya/project/01_learning_notes/esp32/esp32-board/display/build",
@@ -95,13 +95,13 @@
             "dir": "/home/luchenya/project/01_learning_notes/esp32/esp32-board/display/components/bsp",
             "type": "LIBRARY",
             "lib": "__idf_bsp",
-            "reqs": [ "esp_timer", "lvgl", "main" ],
+            "reqs": [ "driver", "esp_lcd", "esp_timer" ],
             "priv_reqs": [],
             "managed_reqs": [],
             "managed_priv_reqs": [],
             "file": "/home/luchenya/project/01_learning_notes/esp32/esp32-board/display/build/esp-idf/bsp/libbsp.a",
-            "sources": [ "/home/luchenya/project/01_learning_notes/esp32/esp32-board/display/components/bsp/lv_port.c" ],
-            "include_dirs": [ "." ]
+            "sources": [ "/home/luchenya/project/01_learning_notes/esp32/esp32-board/display/components/bsp/src/st7789_driver.c", "/home/luchenya/project/01_learning_notes/esp32/esp32-board/display/components/bsp/src/cst816t_driver.c" ],
+            "include_dirs": [ "inc" ]
         },
         "bt": {
             "alias": "idf::bt",
@@ -830,13 +830,13 @@
             "dir": "/home/luchenya/project/01_learning_notes/esp32/esp32-board/display/main",
             "type": "LIBRARY",
             "lib": "__idf_main",
-            "reqs": [],
+            "reqs": [ "lvgl", "esp_timer", "bsp" ],
             "priv_reqs": [],
             "managed_reqs": [],
             "managed_priv_reqs": [],
             "file": "/home/luchenya/project/01_learning_notes/esp32/esp32-board/display/build/esp-idf/main/libmain.a",
-            "sources": [ "/home/luchenya/project/01_learning_notes/esp32/esp32-board/display/main/cst816t_driver.c", "/home/luchenya/project/01_learning_notes/esp32/esp32-board/display/main/st7789_driver.c", "/home/luchenya/project/01_learning_notes/esp32/esp32-board/display/main/main.c" ],
-            "include_dirs": [ "." ]
+            "sources": [ "/home/luchenya/project/01_learning_notes/esp32/esp32-board/display/main/src/main.c", "/home/luchenya/project/01_learning_notes/esp32/esp32-board/display/main/src/lv_port.c" ],
+            "include_dirs": [ "inc" ]
         },
         "mbedtls": {
             "alias": "idf::mbedtls",
@@ -2142,11 +2142,11 @@
             "prefix": "idf",
             "dir": "/home/luchenya/project/01_learning_notes/esp32/esp32-board/display/main",
             "lib": "__idf_main",
-            "reqs": [],
+            "reqs": [ "lvgl", "esp_timer", "bsp" ],
             "priv_reqs": [],
             "managed_reqs": [],
             "managed_priv_reqs": [],
-            "include_dirs": [ "." ]
+            "include_dirs": [ "inc" ]
         },
         "bsp": {
             "alias": "idf::bsp",
@@ -2154,11 +2154,11 @@
             "prefix": "idf",
             "dir": "/home/luchenya/project/01_learning_notes/esp32/esp32-board/display/components/bsp",
             "lib": "__idf_bsp",
-            "reqs": [ "esp_timer", "lvgl", "main" ],
+            "reqs": [ "driver", "esp_lcd", "esp_timer" ],
             "priv_reqs": [],
             "managed_reqs": [],
             "managed_priv_reqs": [],
-            "include_dirs": [ "." ]
+            "include_dirs": [ "inc" ]
         },
         "lvgl": {
             "alias": "idf::lvgl",

@@ -62,6 +62,6 @@
 /home/luchenya/project/01_learning_notes/esp32/esp32-board/display/build/esp-idf/perfmon/libperfmon.a
 /home/luchenya/project/01_learning_notes/esp32/esp32-board/display/build/esp-idf/spiffs/libspiffs.a
 /home/luchenya/project/01_learning_notes/esp32/esp32-board/display/build/esp-idf/wifi_provisioning/libwifi_provisioning.a
-/home/luchenya/project/01_learning_notes/esp32/esp32-board/display/build/esp-idf/main/libmain.a
 /home/luchenya/project/01_learning_notes/esp32/esp32-board/display/build/esp-idf/lvgl/liblvgl.a
 /home/luchenya/project/01_learning_notes/esp32/esp32-board/display/build/esp-idf/bsp/libbsp.a
+/home/luchenya/project/01_learning_notes/esp32/esp32-board/display/build/esp-idf/main/libmain.a
