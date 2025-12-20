@@ -116,6 +116,12 @@ _deps
 sdkconfig
 sdkconfig.old
 
+# 忽略所有子目录下的build文件夹
+**/build/
+# 忽略所有子目录下的sdkconfig文件
+**/sdkconfig
+**/sdkconfig.old
+
 # 忽略生成的二进制文件
 *.bin
 *.elf
@@ -303,6 +309,7 @@ tags
 #################### VisualStudioCode.gitignore ####################
 
 .vscode/*
+**/.vscode/
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
