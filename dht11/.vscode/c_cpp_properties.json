@@ -1,4 +1,5 @@
 {
+  "enableConfigurationSquiggles": false,
   "configurations": [
     {
       "name": "ESP-IDF",
