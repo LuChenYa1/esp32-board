@@ -4,7 +4,7 @@
 #include "esp_log.h"
 #include "esp_err.h"
 #include "nvs_flash.h"
-#include "nvs.h"
+#include "nvs_driver.h"
 
 static const char *TAG = "main";
 
