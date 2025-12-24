@@ -5,16 +5,13 @@
 /** 启动smartconfig
  * @param 无
  * @return 无
-*/
-void smartconfig_start(void);
+ */
+void vSmartConfigStart(void);
 
 /** 初始化
  * @param 无
  * @return 无
-*/
-void initialise_wifi(void);
-
-
-
+ */
+void vWifiInit(void);
 
 #endif

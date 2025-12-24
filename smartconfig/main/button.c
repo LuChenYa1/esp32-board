@@ -1,3 +1,17 @@
+/**
+ * @file button.c
+ * @brief 按键处理模块
+ * @author  (LuChenYa1@github.com)
+ * @version 0.0.2
+ * @date 2025-12-24
+ * @copyright Copyright © 2021-2021 xqyjlj <LuChenYa1@github.com>
+ * 
+ * 已格式化
+ * 已修改变量命名
+ * 已修改注释方式
+ * 中英文隔开
+ * 花括号不换行
+ */
 #include "button.h"
 
 #include "esp_log.h"
@@ -5,142 +19,134 @@
 #include "esp_timer.h"
 #include <stdio.h>
 #include <string.h>
-static const char* TAG = "button";
+static const char *TAG = "button";
 
 typedef enum
 {
-    BUTTON_RELEASE,             //按键没有按下
-    BUTTON_PRESS,               //按键按下了，等待一点延时（消抖），然后触发短按回调事件，进入BUTTON_HOLD
-    BUTTON_HOLD,                //按住状态，如果时间长度超过设定的超时计数，将触发长按回调函数，进入BUTTON_LONG_PRESS_HOLD
-    BUTTON_LONG_PRESS_HOLD,     //此状态等待电平消失，回到BUTTON_RELEASE状态
-}BUTTON_STATE;
+    BUTTON_RELEASE,         // 按键没有按下
+    BUTTON_PRESS,           // 按键按下了，等待一点延时（消抖），然后触发短按回调事件，进入 BUTTON_HOLD
+    BUTTON_HOLD,            // 按住状态，如果时间长度超过设定的超时计数，将触发长按回调函数，进入 BUTTON_LONG_PRESS_HOLD
+    BUTTON_LONG_PRESS_HOLD, // 此状态等待电平消失，回到 BUTTON_RELEASE 状态
+} ButtonState_e;
 
 typedef struct Button
 {
-    button_config_t btn_cfg;    //按键配置
-    BUTTON_STATE    state;      //当前状态
-    int press_cnt;              //按下计数
-    struct Button* next;        //下一个按键参数
-}button_dev_t;
+    ButtonConfig_t xBtnConfig; // 按键配置
+    ButtonState_e eState;      // 当前状态
+    int iPressCount;           // 按下计数
+    struct Button *pxNext;     // 下一个按键参数
+} ButtonDevice_t;
 
-//按键处理列表
-static button_dev_t *s_button_head = NULL;
+/* 按键处理列表 */ 
+static ButtonDevice_t *pxBtnHead = NULL;
 
-//消抖过滤时间
-#define FILITER_TIMER   20
+/* 消抖过滤时间 */ 
+#define FILITER_TIMER 20
 
-//定时器释放运行标志
-static bool g_is_timer_running = false;
+/* 定时器释放运行标志 */ 
+static bool IsTimerRunning = false;
 
-//定时器句柄
-static esp_timer_handle_t g_button_timer_handle;
+/* 定时器句柄 */ 
+static esp_timer_handle_t xBtnTimerHandle;
 
-static void button_handle(void *param);
+static void prvBtnHandle(void *pvParam);
 
 /** 设置按键事件
- * @param cfg   配置结构体
- * @return ESP_OK or ESP_FAIL 
-*/
-esp_err_t button_event_set(button_config_t *cfg)
+ * @pvParam pxConfig   配置结构体
+ * @return ESP_OK or ESP_FAIL
+ */
+esp_err_t xBtnEventSet(ButtonConfig_t *pxConfig)
 {
-    gpio_config_t gpio_t = 
-    {
+    gpio_config_t xGPIOConfig = {
         .intr_type = GPIO_INTR_DISABLE,
         .mode = GPIO_MODE_INPUT,
-        .pin_bit_mask = (1ull<<cfg->gpio_num),
+        .pin_bit_mask = (1ull << pxConfig->iGPIONum),
         .pull_down_en = GPIO_PULLDOWN_DISABLE,
         .pull_up_en = GPIO_PULLUP_ENABLE,
     };
-    ESP_ERROR_CHECK(gpio_config(&gpio_t));
-    button_dev_t* btn = (button_dev_t*)malloc(sizeof(button_dev_t));
-    if(!btn)
+    ESP_ERROR_CHECK(gpio_config(&xGPIOConfig));
+    ButtonDevice_t *pxBtn = (ButtonDevice_t *)malloc(sizeof(ButtonDevice_t));
+    if (!pxBtn){
         return ESP_FAIL;
-    memset(btn,0,sizeof(button_dev_t));
-    if(!s_button_head)
-    {
-        s_button_head = btn;
-        ESP_LOGI(TAG,"first btn add");
     }
-    else
-    {
-        button_dev_t* btn_p = s_button_head;
-        while(btn_p->next != NULL)
-            btn_p = btn_p->next;
-        btn_p->next = btn;
-        ESP_LOGI(TAG,"btn add");
+    memset(pxBtn, 0, sizeof(ButtonDevice_t));
+    if (!pxBtnHead){
+        pxBtnHead = pxBtn;
+        ESP_LOGI(TAG, "first btn add");
+    }else{
+        ButtonDevice_t *pxBtnDev = pxBtnHead;
+        while (pxBtnDev->pxNext != NULL){
+            pxBtnDev = pxBtnDev->pxNext;
+        }
+        pxBtnDev->pxNext = pxBtn;
+        ESP_LOGI(TAG, "btn add");
     }
-    memcpy(&btn->btn_cfg,cfg,sizeof(button_config_t));
-
-    if (false == g_is_timer_running) {
-        ESP_LOGI(TAG,"run button timer");
-        static int timer_interval = 5;
-        esp_timer_create_args_t button_timer;
-        button_timer.arg = (void*)timer_interval;
-        button_timer.callback = button_handle;
-        button_timer.dispatch_method = ESP_TIMER_TASK;
-        button_timer.name = "button_handle";
-        esp_timer_create(&button_timer, &g_button_timer_handle);
-        esp_timer_start_periodic(g_button_timer_handle,  5000);
-        g_is_timer_running = true;
+    memcpy(&pxBtn->xBtnConfig, pxConfig, sizeof(ButtonConfig_t));
+    /* 创建定时器 */
+    if (false == IsTimerRunning){ // 防止重复创建定时器
+        ESP_LOGI(TAG, "run button timer");
+        /* static 是否多余？ */
+        static int iTimerInterval = 5;
+        esp_timer_create_args_t xBtnTimer;
+        xBtnTimer.arg = (void *)iTimerInterval;
+        xBtnTimer.callback = prvBtnHandle;
+        xBtnTimer.dispatch_method = ESP_TIMER_TASK;
+        xBtnTimer.name = "prvBtnHandle";
+        esp_timer_create(&xBtnTimer, &xBtnTimerHandle);
+        esp_timer_start_periodic(xBtnTimerHandle, 5000);
+        IsTimerRunning = true;
     }
-
 
     return ESP_OK;
 }
 
-static void button_handle(void *param)
+static void prvBtnHandle(void *pvParam)
 {
-    int increase_cnt = (int)param;
-    button_dev_t* btn_target = s_button_head;
-    for(;btn_target;btn_target = btn_target->next)
-    {
-        switch(btn_target->state)
-        {
-            case BUTTON_RELEASE:             //按键没有按下
-                if(gpio_get_level(btn_target->btn_cfg.gpio_num) == btn_target->btn_cfg.active_level)
-                {
-                    btn_target->press_cnt += increase_cnt;
-                    btn_target->state = BUTTON_PRESS;
+    int iIncCount = (int)pvParam;
+    ButtonDevice_t *pxBtnTarget = pxBtnHead;
+    /* 遍历每一个按键设备节点 */
+    for (; pxBtnTarget; pxBtnTarget = pxBtnTarget->pxNext){
+        switch (pxBtnTarget->eState){
+        case BUTTON_RELEASE: // 按键没有按下
+            if (gpio_get_level(pxBtnTarget->xBtnConfig.iGPIONum) == pxBtnTarget->xBtnConfig.iActiveLevel){
+                pxBtnTarget->iPressCount += iIncCount;
+                pxBtnTarget->eState = BUTTON_PRESS;
+            }
+            break;
+        case BUTTON_PRESS: // 按键按下了，等待一点延时（消抖），然后触发短按回调事件，进入 BUTTON_HOLD
+            if (gpio_get_level(pxBtnTarget->xBtnConfig.iGPIONum) == pxBtnTarget->xBtnConfig.iActiveLevel){
+                pxBtnTarget->iPressCount += iIncCount;
+                if (pxBtnTarget->iPressCount >= FILITER_TIMER){ // 防止引脚电平抖动导致误判为按下状态
+                    ESP_LOGI(TAG, "short press detect");
+                    if (pxBtnTarget->xBtnConfig.xShortCallback)
+                        pxBtnTarget->xBtnConfig.xShortCallback();
+                    pxBtnTarget->eState = BUTTON_HOLD;
                 }
-                break;
-            case BUTTON_PRESS:               //按键按下了，等待一点延时（消抖），然后触发短按回调事件，进入BUTTON_HOLD
-                if(gpio_get_level(btn_target->btn_cfg.gpio_num) == btn_target->btn_cfg.active_level)
-                {
-                    btn_target->press_cnt += increase_cnt;
-                    if(btn_target->press_cnt >= FILITER_TIMER)
-                    {
-                        ESP_LOGI(TAG,"short press detect");
-                        if(btn_target->btn_cfg.short_cb)
-                            btn_target->btn_cfg.short_cb();
-                        btn_target->state = BUTTON_HOLD;
-                    }
+            }
+            else
+                pxBtnTarget->eState = BUTTON_RELEASE;
+            break;
+        case BUTTON_HOLD: // 按住状态，如果时间长度超过设定的超时计数，将触发长按回调函数，进入 BUTTON_LONG_PRESS_HOLD
+            if (gpio_get_level(pxBtnTarget->xBtnConfig.iGPIONum) == pxBtnTarget->xBtnConfig.iActiveLevel){
+                pxBtnTarget->iPressCount += iIncCount;
+                if (pxBtnTarget->iPressCount >= pxBtnTarget->xBtnConfig.iLongPressTime){
+                    ESP_LOGI(TAG, "long press detect");
+                    if (pxBtnTarget->xBtnConfig.xLongCallback)
+                        pxBtnTarget->xBtnConfig.xLongCallback();
+                    pxBtnTarget->eState = BUTTON_LONG_PRESS_HOLD;
                 }
-                else
-                    btn_target->state = BUTTON_RELEASE;
-                break;
-            case BUTTON_HOLD:                //按住状态，如果时间长度超过设定的超时计数，将触发长按回调函数，进入BUTTON_LONG_PRESS_HOLD
-                if(gpio_get_level(btn_target->btn_cfg.gpio_num) == btn_target->btn_cfg.active_level)
-                {
-                    btn_target->press_cnt += increase_cnt;
-                    if(btn_target->press_cnt >= btn_target->btn_cfg.long_press_time)
-                    {
-                        ESP_LOGI(TAG,"long press detect");
-                        if(btn_target->btn_cfg.long_cb)
-                            btn_target->btn_cfg.long_cb();
-                        btn_target->state = BUTTON_LONG_PRESS_HOLD;
-                    }
-                }
-                else
-                    btn_target->state = BUTTON_RELEASE;
-                break;
-            case BUTTON_LONG_PRESS_HOLD:     //此状态等待电平消失，回到BUTTON_RELEASE状态
-                if(gpio_get_level(btn_target->btn_cfg.gpio_num) != btn_target->btn_cfg.active_level)
-                {
-                    btn_target->state = BUTTON_RELEASE;
-                    btn_target->press_cnt = 0;
-                }
-                break;
-            default:break;
+            }
+            else
+                pxBtnTarget->eState = BUTTON_RELEASE;
+            break;
+        case BUTTON_LONG_PRESS_HOLD: // 此状态等待电平消失，回到 BUTTON_RELEASE 状态
+            if (gpio_get_level(pxBtnTarget->xBtnConfig.iGPIONum) != pxBtnTarget->xBtnConfig.iActiveLevel){
+                pxBtnTarget->eState = BUTTON_RELEASE;
+                pxBtnTarget->iPressCount = 0;
+            }
+            break;
+        default:
+            break;
         }
     }
 }
